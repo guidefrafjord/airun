@@ -1009,10 +1009,6 @@ function renderNeste() {
       : '';
   }
 
-  const listMax = showAllUpcoming ? SEKVENS.length : 3;
-  const upcomingList = SEKVENS.slice(idx + 1, idx + 1 + listMax);
-  const hasMore = !showAllUpcoming && (SEKVENS.length - idx - 1) > 3;
-
   container.innerHTML = `
     <div style="max-width: 560px;">
       <article class="neste-card ${nextOkt.type.toLowerCase()}">
@@ -1032,34 +1028,7 @@ function renderNeste() {
         </div>
       </article>
     </div>
-    ${upcomingList.length > 0 ? `
-      <div class="upcoming-list">
-        <div class="upcoming-list-label">Kommende økter</div>
-        ${upcomingList.map((okt, i) => {
-          const absIdx = idx + 1 + i;
-          const ukNr = Math.floor(absIdx / 3) + 1;
-          return `
-            <div class="upcoming-row">
-              <div class="upcoming-dot ${okt.type.toLowerCase()}"></div>
-              <div class="upcoming-info">
-                <span class="upcoming-name">${okt.navn}</span>
-                <span class="upcoming-sub">Løp ${okt.type} · Uke ${ukNr}</span>
-              </div>
-              <span class="upcoming-detail">${okt.detaljer[0]}</span>
-            </div>`;
-        }).join('')}
-        ${hasMore || showAllUpcoming ? `<div style="margin-top:10px;"><button class="see-more-btn" type="button" id="toggle-more">${showAllUpcoming ? 'Vis færre' : 'Se mer'}</button></div>` : ''}
-      </div>
-    ` : ''}
   `;
-
-  const toggle = document.getElementById('toggle-more');
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      showAllUpcoming = !showAllUpcoming;
-      renderNeste();
-    });
-  }
 }
 
 function fullforOkt(index) {
