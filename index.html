@@ -1261,11 +1261,9 @@ function renderHistorikk() {
     return `
       <div class="history-entry ${typeClass}">
         <div class="history-entry-head">
-          <div class="history-head-left">
-            <span class="history-badge ${log.source}">${log.source === 'plan' ? 'Plan' : 'Manuell'}</span>
-            ${log.okt ? `<span class="history-type-chip">Løp ${log.okt}</span>` : ''}
-            <span class="history-dato">${log.dato}</span>
-          </div>
+          <span class="history-badge ${log.source}">${log.source === 'plan' ? 'Plan' : 'Manuell'}</span>
+          ${log.okt ? `<span class="history-type-chip">Løp ${log.okt}</span>` : ''}
+          <span class="history-dato">${log.dato}</span>
         </div>
         <div class="history-entry-body">
           <div class="history-title">${log.title || (log.okt ? `Løp ${log.okt}` : 'Økt')}</div>
