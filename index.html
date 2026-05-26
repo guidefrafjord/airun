@@ -1093,27 +1093,43 @@ function fullforOkt(index) {
 
 function renderUkePlan() {
   const idx = getIdx();
-  const ferdigOkter = idx;
-  const tbody = document.getElementById('uke-tbody');
-  tbody.innerHTML = UKER.map((u, ui) => {
+  const currentUke = Math.floor(idx / 3);
+  const container = document.getElementById('uke-plan-container');
+  container.innerHTML = UKER.map((u, ui) => {
     const startIdx = ui * 3;
-    const aFerdig = ferdigOkter > startIdx;
-    const bFerdig = ferdigOkter > startIdx + 1;
-    const cFerdig = ferdigOkter > startIdx + 2;
+    const aFerdig = idx > startIdx;
+    const bFerdig = idx > startIdx + 1;
+    const cFerdig = idx > startIdx + 2;
     const heleFerdig = cFerdig;
+    const erNaa = ui === currentUke && !heleFerdig;
+    const cardClass = heleFerdig ? 'done-card' : erNaa ? 'current-card' : '';
     return `
-      <tr class="${u.hvile ? 'hvile-row' : ''} ${heleFerdig ? 'done-row' : ''}">
-        <td>
-          <span class="uke-num">${u.uke}</span>
-          <span class="uke-km">~${u.km} km</span>
-          ${u.hvile ? '<span class="hvile-badge">Hvile</span>' : ''}
-          ${heleFerdig ? '<span class="done-check"> ✓</span>' : ''}
-        </td>
-        <td class="td-a">${aFerdig ? '✓ ' : ''}${u.a}</td>
-        <td class="td-b">${bFerdig ? '✓ ' : ''}${u.b}</td>
-        <td class="td-c">${cFerdig ? '✓ ' : ''}${u.c}</td>
-        <td style="color:var(--ink3);font-size:12px">${u.km} km</td>
-      </tr>`;
+      <div class="uke-card ${cardClass}">
+        <div class="uke-card-head">
+          <div class="uke-card-head-left">
+            <span class="uke-card-num">Uke ${u.uke}</span>
+            ${u.hvile ? '<span class="hvile-badge">Hvile</span>' : ''}
+            ${heleFerdig ? '<span style="color:var(--green);font-size:13px;">✓</span>' : ''}
+            ${erNaa ? '<span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--a);font-weight:600;">Nå</span>' : ''}
+          </div>
+          <span class="uke-card-km">~${u.km} km</span>
+        </div>
+        <div class="uke-card-row a">
+          <span class="uke-row-type">A</span>
+          <span>${u.a}</span>
+          ${aFerdig ? '<span class="uke-row-done">✓</span>' : ''}
+        </div>
+        <div class="uke-card-row b">
+          <span class="uke-row-type">B</span>
+          <span>${u.b}</span>
+          ${bFerdig ? '<span class="uke-row-done">✓</span>' : ''}
+        </div>
+        <div class="uke-card-row c">
+          <span class="uke-row-type">C</span>
+          <span>${u.c}</span>
+          ${cFerdig ? '<span class="uke-row-done">✓</span>' : ''}
+        </div>
+      </div>`;
   }).join('');
 }
 
