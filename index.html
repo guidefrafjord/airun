@@ -1235,30 +1235,45 @@ function renderHistorikk() {
   }
 
   list.innerHTML = history.map(log => {
-    const summary = [];
-    if (log.km) summary.push(`${log.km.toFixed(1)} km`);
-    if (log.tempo) summary.push(`${log.tempo}/km`);
-    if (log.puls) summary.push(`${log.puls} bpm`);
+    const typeClass = log.okt ? `type-${log.okt}` : 'type-D';
 
-    const details = log.details && log.details.length ? `<div class="history-copy">${log.details.join(' • ')}</div>` : '';
-    const notat = log.notat ? `<div class="history-copy">${log.notat}</div>` : '';
+    const stats = [];
+    if (log.km) stats.push({ label: 'Distanse', val: `${log.km.toFixed(1)} km` });
+    if (log.tempo) stats.push({ label: 'Tempo', val: `${log.tempo}/km` });
+    if (log.puls) stats.push({ label: 'Snittspuls', val: `${log.puls} bpm` });
+
+    const details = log.details && log.details.length
+      ? `<div class="history-copy">${log.details.join(' · ')}</div>`
+      : '';
+    const notat = log.notat
+      ? `<div class="history-copy" style="margin-top:6px;font-style:italic;">${log.notat}</div>`
+      : '';
+
+    const foot = stats.length ? `
+      <div class="history-entry-foot">
+        ${stats.map(s => `
+          <div class="history-stat">
+            <span class="history-stat-label">${s.label}</span>
+            <span class="history-stat-val">${s.val}</span>
+          </div>`).join('')}
+      </div>` : '';
 
     return `
-      <div class="history-entry">
-        <div>
-          <div class="history-topline">
+      <div class="history-entry ${typeClass}">
+        <div class="history-entry-head">
+          <div class="history-head-left">
             <span class="history-badge ${log.source}">${log.source === 'plan' ? 'Plan' : 'Manuell'}</span>
+            ${log.okt ? `<span class="history-type-chip">Løp ${log.okt}</span>` : ''}
             <span class="history-dato">${log.dato}</span>
-            ${log.okt ? `<span class="history-dato">Løp ${log.okt}</span>` : ''}
           </div>
+          <span class="foel-icon">${foelIkon[log.foel] || ''}</span>
+        </div>
+        <div class="history-entry-body">
           <div class="history-title">${log.title || (log.okt ? `Løp ${log.okt}` : 'Økt')}</div>
           ${details}
           ${notat}
-          <div class="history-meta">${summary.join(' • ')}</div>
         </div>
-        <div class="history-actions">
-          <span class="foel-icon">${foelIkon[log.foel] || ''}</span>
-        </div>
+        ${foot}
       </div>`;
   }).join('');
 }
