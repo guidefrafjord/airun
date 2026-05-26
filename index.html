@@ -1047,7 +1047,6 @@ function fullforOkt(index) {
 
   saveLogs(history);
   setIdx(index + 1);
-  showAllUpcoming = false;
   renderNeste();
   renderUkePlan();
   renderProfil();
@@ -1106,7 +1105,6 @@ function angreSiste() {
   saveLogs(logs);
 
   setIdx(idx - 1);
-  showAllUpcoming = false;
   renderNeste();
   renderUkePlan();
   renderProfil();
@@ -1117,7 +1115,6 @@ function resetProgram() {
   if (!confirm('Er du sikker? All historikk og fremdrift blir slettet, og programmet starter fra begynnelsen.')) return;
   localStorage.removeItem('lp_idx');
   localStorage.removeItem('lp2_logs');
-  showAllUpcoming = false;
   renderNeste();
   renderUkePlan();
   renderProfil();
