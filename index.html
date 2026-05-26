@@ -25,7 +25,24 @@
     --border: rgba(26,26,22,0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 13px; }
+  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 13px; transition: background 0.2s ease, color 0.2s ease; }
+  body[data-theme="dark"] {
+    --bg: #0F1110;
+    --bg2: #1A1E1A;
+    --ink: #F5F2EC;
+    --ink2: #D4D1C6;
+    --ink3: #9E998C;
+    --a: #7CD694;
+    --a-light: rgba(124, 214, 148, 0.16);
+    --b: #8CBFFF;
+    --b-light: rgba(140, 191, 255, 0.16);
+    --c: #F0B269;
+    --c-light: rgba(240, 178, 105, 0.16);
+    --d: #D8D0B9;
+    --d-light: rgba(216, 208, 185, 0.16);
+    --green: #7CD694;
+    --border: rgba(245, 242, 236, 0.12);
+  }
 
   .header { padding: 40px 40px 28px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
   .header::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; border:1px solid var(--border); opacity:0.6; }
@@ -36,6 +53,28 @@
   .header-meta { display:flex; gap:12px; flex-wrap:wrap; }
   .meta-pill { background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:4px 12px; font-size:11px; color:var(--ink2); }
   .meta-pill span { color:var(--ink); font-weight:500; }
+
+  .theme-toggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .theme-toggle:hover { transform: translateY(-1px); }
+  .theme-toggle .theme-icon { font-size: 14px; }
 
   /* NESTE ØKT BOKS */
   .neste-wrap { padding: 24px 40px; border-bottom: 1px solid var(--border); }
@@ -235,6 +274,10 @@
     <div class="meta-pill">VO2max <span>47</span></div>
     <div class="meta-pill">Voldsløkka</div>
   </div>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">
+    <span class="theme-icon">🌙</span>
+    <span id="theme-text">Mørkt tema</span>
+  </button>
 </div>
 
 <!-- NESTE ØKT -->
@@ -445,6 +488,28 @@ const UKER = [
 const colors = {A:'#2D6A3F', B:'#1A4A7A', C:'#8B4A00', D:'#5A5A52'};
 const foelIkon = {lett:'😌', passe:'😊', tungt:'😅', hardt:'😤'};
 
+const themeToggle = document.getElementById('theme-toggle');
+const themeText = document.getElementById('theme-text');
+
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+  themeToggle.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+  themeText.textContent = theme === 'dark' ? 'Lyst tema' : 'Mørkt tema';
+  localStorage.setItem('lp-theme', theme);
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('lp-theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+}
+
+themeToggle.addEventListener('click', () => {
+  const current = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(current);
+});
+
 function getIdx() { return parseInt(localStorage.getItem('lp_idx') || '0'); }
 function setIdx(i) { localStorage.setItem('lp_idx', i); }
 function getLogs() { try { return JSON.parse(localStorage.getItem('lp2_logs') || '[]'); } catch { return []; } }
@@ -598,6 +663,7 @@ function renderFremgang() {
 }
 
 document.getElementById('l-dato').value = new Date().toISOString().slice(0,10);
+initTheme();
 renderNeste();
 renderUkePlan();
 renderLoggList();
