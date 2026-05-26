@@ -919,6 +919,13 @@ function renderNeste() {
   const ukeNr = Math.floor(idx / 3) + 1;
   status.textContent = `${remaining} økter gjenstår · Uke ${currentWeek()}`;
 
+  const angreWrap = document.getElementById('angre-wrap');
+  if (angreWrap) {
+    angreWrap.innerHTML = idx > 0
+      ? `<button class="angre-btn" onclick="angreSiste()">↩ Angre siste økt</button>`
+      : '';
+  }
+
   const listMax = showAllUpcoming ? SEKVENS.length : 3;
   const upcomingList = SEKVENS.slice(idx + 1, idx + 1 + listMax);
   const hasMore = !showAllUpcoming && (SEKVENS.length - idx - 1) > 3;
