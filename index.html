@@ -1027,6 +1027,34 @@ function renderUkePlan() {
   }).join('');
 }
 
+function angreSiste() {
+  const idx = getIdx();
+  if (idx === 0) return;
+
+  const logs = getLogs().map(normalizeLog);
+  const lastPlanIdx = logs.findIndex(l => l.source === 'plan');
+  if (lastPlanIdx !== -1) logs.splice(lastPlanIdx, 1);
+  saveLogs(logs);
+
+  setIdx(idx - 1);
+  showAllUpcoming = false;
+  renderNeste();
+  renderUkePlan();
+  renderProfil();
+  renderHistorikk();
+}
+
+function resetProgram() {
+  if (!confirm('Er du sikker? All historikk og fremdrift blir slettet, og programmet starter fra begynnelsen.')) return;
+  localStorage.removeItem('lp_idx');
+  localStorage.removeItem('lp2_logs');
+  showAllUpcoming = false;
+  renderNeste();
+  renderUkePlan();
+  renderProfil();
+  renderHistorikk();
+}
+
 function toggleLogForm() {
   const wrap = document.getElementById('log-form-wrap');
   const btn = document.getElementById('log-toggle-btn');
