@@ -979,11 +979,6 @@ function currentWeek() {
   return Math.floor(getIdx() / 3) + 1;
 }
 
-function upcomingItems() {
-  const idx = getIdx();
-  const max = showAllUpcoming ? SEKVENS.length : 4;
-  return SEKVENS.slice(idx, idx + max);
-}
 
 function renderNeste() {
   const idx = getIdx();
