@@ -119,8 +119,21 @@
   .section-label { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink3); margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
 
   /* KOMMENDE ØKTER */
-  .kommende-grid { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
-  .kommende-grid.utvidet { max-height: 500px; overflow-y: scroll; padding-right: 6px; }
+  .kommende-grid { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+  .kommende-nav {
+    display: none; justify-content: space-between; align-items: center;
+    margin-bottom: 16px; gap: 12px;
+  }
+  .kommende-nav.synlig { display: flex; }
+  .kommende-nav-btn {
+    background: none; border: 1px solid var(--border); border-radius: 3px;
+    padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 13px;
+    color: var(--ink3); cursor: pointer; transition: color 0.2s, border-color 0.2s;
+    flex: 1;
+  }
+  .kommende-nav-btn:hover:not(:disabled) { color: var(--ink); border-color: var(--ink); }
+  .kommende-nav-btn:disabled { opacity: 0.25; cursor: default; }
+  .kommende-nav-info { font-size: 11px; color: var(--ink3); text-align: center; white-space: nowrap; }
   .kommende-card {
     background: var(--bg2); border: 1px solid var(--border); border-radius: 4px;
     padding: 18px 20px; display: grid; grid-template-columns: 1fr auto;
@@ -270,6 +283,11 @@
 <div id="kommende" class="page active">
   <div class="section-label">Kommende økter</div>
   <div class="kommende-grid" id="kommende-grid"></div>
+  <div class="kommende-nav" id="kommende-nav">
+    <button class="kommende-nav-btn" id="nav-opp" onclick="navigerOpp()">↑</button>
+    <div class="kommende-nav-info" id="nav-info"></div>
+    <button class="kommende-nav-btn" id="nav-ned" onclick="navigerNed()">↓</button>
+  </div>
   <button class="vis-mer-btn" id="vis-mer-btn" onclick="visMer()">Vis flere økter</button>
 </div>
 
@@ -345,54 +363,54 @@
 
 <script>
 const SEKVENS = [
-  // Uke 1
-  {type:'A', navn:'Langtur ute', detaljer:['3,5 km', '6:25–6:55 /km', 'S1 · 142–150 bpm']},
+  // Økt 1
+  {type:'A', navn:'Distanse', detaljer:['3,5 km', '6:25–6:55 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['6 × 400m', 'Mølla: 10,0 km/t · Ute: 400m @ 6:00 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['1,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
-  // Uke 2
-  {type:'A', navn:'Langtur ute', detaljer:['4,0 km', '6:15–6:45 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['1,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
+  // Økt 2
+  {type:'A', navn:'Distanse', detaljer:['4,0 km', '6:15–6:45 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['6 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['2,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
-  // Uke 3
-  {type:'A', navn:'Langtur ute', detaljer:['4,5 km', '6:05–6:35 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['2,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
+  // Økt 3
+  {type:'A', navn:'Distanse', detaljer:['4,5 km', '6:05–6:35 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['7 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['3,0 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
-  // Uke 4
-  {type:'A', navn:'Langtur ute', detaljer:['5,0 km', '6:25–6:55 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['3,0 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
+  // Økt 4
+  {type:'A', navn:'Distanse', detaljer:['5,0 km', '6:25–6:55 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['8 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['3,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
-  // Uke 5
-  {type:'A', navn:'Langtur ute', detaljer:['5,5 km', '6:15–6:45 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['3,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
+  // Økt 5
+  {type:'A', navn:'Distanse', detaljer:['5,5 km', '6:15–6:45 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['5 × 600m', 'Mølla: 10,8 km/t · Ute: 600m @ 5:33 /km', 'Pause: 90 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['4,0 km', '5:10–5:40 /km', 'S2 · 157–165 bpm']},
-  // Uke 6
-  {type:'A', navn:'Langtur ute', detaljer:['6,0 km', '6:05–6:35 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['4,0 km', '5:10–5:40 /km', 'S2 · 157–165 bpm']},
+  // Økt 6
+  {type:'A', navn:'Distanse', detaljer:['6,0 km', '6:05–6:35 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['5 × 600m', 'Mølla: 11,0 km/t · Ute: 600m @ 5:27 /km', 'Pause: 90 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['4,5 km', '5:05–5:35 /km', 'S2 · 157–165 bpm']},
-  // Uke 7
-  {type:'A', navn:'Langtur ute', detaljer:['6,5 km', '5:55–6:25 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['4,5 km', '5:05–5:35 /km', 'S2 · 157–165 bpm']},
+  // Økt 7
+  {type:'A', navn:'Distanse', detaljer:['6,5 km', '5:55–6:25 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['4 × 800m', 'Mølla: 10,3 km/t · Ute: 800m @ 5:50 /km', 'Pause: 90 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['5,0 km', '5:00–5:30 /km', 'S2 · 157–165 bpm']},
-  // Uke 8 – hvile
-  {type:'A', navn:'Hvileuke – Langtur rolig', detaljer:['4,0 km', '6:25–6:55 /km', 'S1 · rolig']},
-  {type:'B', navn:'Hvileuke – Lett intervall', detaljer:['5 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Ikke press']},
-  {type:'C', navn:'Hvileuke – Rolig jogg', detaljer:['2,5 km', '5:20–5:50 /km', 'Under 157 bpm']},
-  // Uke 9
-  {type:'A', navn:'Langtur ute', detaljer:['7,0 km', '5:50–6:20 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['5,0 km', '5:00–5:30 /km', 'S2 · 157–165 bpm']},
+  // Økt 8 – hvile
+  {type:'A', navn:'Distanse – rolig', detaljer:['4,0 km', '6:25–6:55 /km', 'S1 · rolig']},
+  {type:'B', navn:'Intervaller – lett', detaljer:['5 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Ikke press']},
+  {type:'C', navn:'Moderat – rolig', detaljer:['2,5 km', '5:20–5:50 /km', 'Under 157 bpm']},
+  // Økt 9
+  {type:'A', navn:'Distanse', detaljer:['7,0 km', '5:50–6:20 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['4 × 800m', 'Mølla: 10,5 km/t · Ute: 800m @ 5:43 /km', 'Pause: 90 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['5,5 km', '4:55–5:25 /km', 'S2 · 157–165 bpm']},
-  // Uke 10
-  {type:'A', navn:'Langtur ute', detaljer:['7,5 km', '5:45–6:15 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['5,5 km', '4:55–5:25 /km', 'S2 · 157–165 bpm']},
+  // Økt 10
+  {type:'A', navn:'Distanse', detaljer:['7,5 km', '5:45–6:15 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['5 × 800m', 'Mølla: 10,5 km/t · Ute: 800m @ 5:43 /km', 'Pause: 90 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['6,0 km', '4:50–5:20 /km', 'S2 · 157–165 bpm']},
-  // Uke 11
-  {type:'A', navn:'Langtur ute', detaljer:['8,0 km', '5:40–6:10 /km', 'S1 · 142–150 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['6,0 km', '4:50–5:20 /km', 'S2 · 157–165 bpm']},
+  // Økt 11
+  {type:'A', navn:'Distanse', detaljer:['8,0 km', '5:40–6:10 /km', 'S1 · 142–150 bpm']},
   {type:'B', navn:'Intervaller', detaljer:['4 × 1000m', 'Mølla: 10,0 km/t · Ute: 1000m @ 6:00 /km', 'Pause: 120 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Toppe S3']},
-  {type:'C', navn:'Moderat kontinuerlig', detaljer:['6,5 km', '4:45–5:15 /km', 'S2 · 157–165 bpm']},
-  // Uke 12 – nedtrapping
-  {type:'A', navn:'Nedtrapping ✈️', detaljer:['3,5 km', '6:25–6:55 /km', 'S1 · lett']},
-  {type:'B', navn:'Nedtrapping – lett intervall', detaljer:['4 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Ikke press']},
-  {type:'C', navn:'Nedtrapping – rolig jogg', detaljer:['2,5 km', '5:20–5:50 /km', 'Rolig']},
+  {type:'C', navn:'Moderat', detaljer:['6,5 km', '4:45–5:15 /km', 'S2 · 157–165 bpm']},
+  // Økt 12 – nedtrapping
+  {type:'A', navn:'Distanse – nedtrapping ✈️', detaljer:['3,5 km', '6:25–6:55 /km', 'S1 · lett']},
+  {type:'B', navn:'Intervaller – nedtrapping', detaljer:['4 × 400m', 'Mølla: 11,0 km/t · Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t (8:34–9:14 /km)', 'Ikke press']},
+  {type:'C', navn:'Moderat – nedtrapping', detaljer:['2,5 km', '5:20–5:50 /km', 'Rolig']},
 ];
 
 const UKER = [
@@ -412,11 +430,18 @@ const UKER = [
 
 const colors = {A:'#2D6A3F', B:'#1A4A7A', C:'#8B4A00', D:'#5A5A52'};
 let visAntall = 4;
+let side = 0;
 
 function getIdx() { return parseInt(localStorage.getItem('lp_idx') || '0'); }
 function setIdx(i) { localStorage.setItem('lp_idx', i); }
 function getLogs() { try { return JSON.parse(localStorage.getItem('lp2_logs') || '[]'); } catch { return []; } }
 function saveLogs(l) { try { localStorage.setItem('lp2_logs', JSON.stringify(l)); } catch {} }
+
+function oktNummer(idx, type) {
+  let n = 0;
+  for (let i = 0; i <= idx; i++) { if (SEKVENS[i].type === type) n++; }
+  return n;
+}
 
 function renderNeste() {
   const idx = getIdx();
@@ -426,11 +451,11 @@ function renderNeste() {
     return;
   }
   const okt = SEKVENS[idx];
-  const ukeNr = Math.floor(idx / 3) + 1;
+  const nr = oktNummer(idx, okt.type);
   container.innerHTML = `
     <div class="neste-box ${okt.type.toLowerCase()}" data-letter="${okt.type}">
       <div class="neste-left">
-        <div class="neste-badge">Løp ${okt.type} · Uke ${ukeNr}</div>
+        <div class="neste-badge">Løp ${okt.type}${nr}</div>
         <div class="neste-navn">${okt.navn}</div>
         <div class="neste-detaljer">
           ${okt.detaljer.map(d => `<span class="neste-tag">${d}</span>`).join('')}
@@ -449,10 +474,11 @@ function fullforOkt() {
   const idx = getIdx();
   const okt = SEKVENS[idx];
   const logs = getLogs();
+  const nr = oktNummer(idx, okt.type);
   logs.unshift({
     dato: new Date().toISOString().slice(0,10),
     okt: okt.type,
-    notat: okt.navn + ' – uke ' + (Math.floor(idx/3)+1),
+    notat: `Løp ${okt.type}${nr} – ${okt.navn}`,
     id: Date.now()
   });
   saveLogs(logs);
@@ -463,7 +489,9 @@ function fullforOkt() {
 }
 
 function angreOkt() {
+  console.log('angreOkt called');
   const idx = getIdx();
+  console.log('idx:', idx);
   if (idx === 0) { alert('Ingen økt å angre.'); return; }
   if (!confirm('Angre siste fullføring?')) return;
   const logs = getLogs();
@@ -474,42 +502,68 @@ function angreOkt() {
   renderKommende();
   renderUkePlan();
   renderLoggList();
-  renderProfil();
 }
 
 function nullstillProgram() {
+  console.log('nullstill called');
   if (!confirm('Er du sikker? Dette sletter all fremgang og historikk.')) return;
   localStorage.removeItem('lp_idx');
   localStorage.removeItem('lp2_logs');
   visAntall = 4;
+  side = 0;
   renderNeste();
   renderKommende();
   renderUkePlan();
   renderLoggList();
-  renderProfil();
 }
 
 function renderKommende() {
   const idx = getIdx();
   const grid = document.getElementById('kommende-grid');
   const btn = document.getElementById('vis-mer-btn');
+  const nav = document.getElementById('kommende-nav');
   const remaining = SEKVENS.length - idx - 1;
 
   if (remaining <= 0) {
-    grid.innerHTML = idx >= SEKVENS.length ? '<div class="empty-state">Alle økter fullført 🎉</div>' : '<div class="empty-state">Ingen flere kommende økter</div>';
+    grid.innerHTML = '<div class="empty-state">Ingen flere kommende økter</div>';
     btn.style.display = 'none';
+    nav.classList.remove('synlig');
     return;
   }
 
-  const vis = Math.min(visAntall, remaining);
-  grid.innerHTML = Array.from({length: vis}, (_, i) => {
-    const oktIdx = idx + 1 + i;
+  if (visAntall === 4) {
+    nav.classList.remove('synlig');
+    const vis = Math.min(4, remaining);
+    grid.innerHTML = lagKort(idx, 0, vis);
+    btn.textContent = 'Vis flere økter';
+    btn.onclick = visMer;
+    btn.style.display = remaining > 4 ? 'block' : 'none';
+  } else {
+    nav.classList.add('synlig');
+    const totSider = Math.ceil(remaining / 8);
+    if (side >= totSider) side = totSider - 1;
+    const fra = side * 8;
+    const til = Math.min(fra + 8, remaining);
+    grid.innerHTML = lagKort(idx, fra, til);
+    document.getElementById('nav-opp').disabled = side === 0;
+    document.getElementById('nav-ned').disabled = side >= totSider - 1;
+    document.getElementById('nav-info').textContent = `${fra + 1}–${til} av ${remaining}`;
+    btn.textContent = 'Vis færre';
+    btn.onclick = visFærre;
+    btn.style.display = 'block';
+  }
+}
+
+function lagKort(idx, fra, til) {
+  return Array.from({length: til - fra}, (_, i) => {
+    const oktIdx = idx + 1 + fra + i;
+    if (oktIdx >= SEKVENS.length) return '';
     const okt = SEKVENS[oktIdx];
-    const ukeNr = Math.floor(oktIdx / 3) + 1;
+    const nr = oktNummer(oktIdx, okt.type);
     return `
       <div class="kommende-card ${okt.type.toLowerCase()}">
         <div class="kommende-info">
-          <div class="kommende-badge">Løp ${okt.type} · Uke ${ukeNr}</div>
+          <div class="kommende-badge">Løp ${okt.type}${nr}</div>
           <div class="kommende-navn">${okt.navn}</div>
           <div class="kommende-tags">
             ${okt.detaljer.map(d => `<span class="kommende-tag">${d}</span>`).join('')}
@@ -519,31 +573,13 @@ function renderKommende() {
       </div>
     `;
   }).join('');
-
-  if (visAntall > 4) {
-    btn.textContent = 'Vis færre';
-    btn.onclick = visFærre;
-    btn.style.display = 'block';
-  } else if (visAntall < remaining) {
-    btn.textContent = 'Vis flere økter';
-    btn.onclick = visMer;
-    btn.style.display = 'block';
-  } else {
-    btn.style.display = 'none';
-  }
 }
 
-function visMer() {
-  visAntall = 8;
-  document.getElementById('kommende-grid').classList.add('utvidet');
-  renderKommende();
-}
+function navigerOpp() { if (side > 0) { side--; renderKommende(); } }
+function navigerNed() { side++; renderKommende(); }
 
-function visFærre() {
-  visAntall = 4;
-  document.getElementById('kommende-grid').classList.remove('utvidet');
-  renderKommende();
-}
+function visMer() { visAntall = 8; side = 0; renderKommende(); }
+function visFærre() { visAntall = 4; side = 0; renderKommende(); }
 
 function renderUkePlan() {
   const idx = getIdx();
@@ -595,6 +631,8 @@ function renderLoggList() {
 }
 
 function renderProfil() {
+  const el = document.getElementById('s-okter');
+  if (!el) return;
   const idx = getIdx();
   const logs = getLogs();
   const total = SEKVENS.length;
