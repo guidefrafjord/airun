@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="no">
 <head>
 <meta charset="UTF-8">
@@ -24,692 +24,235 @@
     --green: #2D6A3F;
     --border: rgba(26,26,22,0.12);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Mono', monospace;
-    background: var(--bg);
-    color: var(--ink);
-    min-height: 100vh;
-    font-size: 13px;
+  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 13px; transition: background 0.2s ease, color 0.2s ease; }
+  body[data-theme="dark"] {
+    --bg: #0F1110;
+    --bg2: #1A1E1A;
+    --ink: #F5F2EC;
+    --ink2: #D4D1C6;
+    --ink3: #9E998C;
+    --a: #7CD694;
+    --a-light: rgba(124, 214, 148, 0.16);
+    --b: #8CBFFF;
+    --b-light: rgba(140, 191, 255, 0.16);
+    --c: #F0B269;
+    --c-light: rgba(240, 178, 105, 0.16);
+    --d: #D8D0B9;
+    --d-light: rgba(216, 208, 185, 0.16);
+    --green: #7CD694;
+    --border: rgba(245, 242, 236, 0.12);
   }
 
-  .header {
-    padding: 40px 40px 28px;
-    border-bottom: 1px solid var(--border);
+  .header { padding: 40px 40px 28px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; border:1px solid var(--border); opacity:0.6; }
+  .header::after { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; border:1px solid var(--border); opacity:0.4; }
+  .header-label { font-size:10px; letter-spacing:0.15em; color:var(--ink3); text-transform:uppercase; margin-bottom:8px; }
+  .header-title { font-family:'Fraunces',serif; font-size:38px; font-weight:300; line-height:1.1; margin-bottom:14px; }
+  .header-title em { font-style:italic; color:var(--green); }
+  .header-meta { display:flex; gap:12px; flex-wrap:wrap; }
+  .meta-pill { background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:4px 12px; font-size:11px; color:var(--ink2); }
+  .meta-pill span { color:var(--ink); font-weight:500; }
+
+  .theme-toggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .theme-toggle:hover { transform: translateY(-1px); }
+  .theme-toggle .theme-icon { font-size: 14px; }
+
+  .neste-wrap { padding: 24px 40px; border-bottom: 1px solid var(--border); }
+  .neste-label { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink3); margin-bottom:12px; }
+  .neste-box {
+    border-radius: 6px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    border: 1.5px solid;
+    transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
   }
-
-  .header::before,
-  .header::after {
-    content: '';
+  .neste-box::before {
+    content: attr(data-letter);
     position: absolute;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    opacity: 0.55;
-  }
-
-  .header::before {
-    top: -60px;
-    right: -60px;
-    width: 220px;
-    height: 220px;
-  }
-
-  .header::after {
-    top: -30px;
-    right: -30px;
-    width: 120px;
-    height: 120px;
-  }
-
-  .header-label {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--ink3);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .header-title {
+    right: 90px; top: -10px;
     font-family: 'Fraunces', serif;
-    font-size: 38px;
-    font-weight: 300;
-    line-height: 1.05;
-    margin-bottom: 14px;
-  }
-
-  .header-title em {
-    font-style: italic;
-    color: var(--green);
-  }
-
-  .header-copy {
-    max-width: 620px;
-    font-size: 12px;
-    line-height: 1.8;
-    color: var(--ink2);
-    margin-bottom: 18px;
-  }
-
-  .header-meta {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .meta-pill {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 11px;
-    color: var(--ink2);
-  }
-
-  .meta-pill span {
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  .neste-wrap {
-    padding: 24px 40px 28px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .neste-heading {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    align-items: end;
-    margin-bottom: 18px;
-  }
-
-  .neste-label {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    margin-bottom: 8px;
-  }
-
-  .neste-subtitle {
-    font-size: 12px;
-    color: var(--ink2);
-    line-height: 1.7;
-  }
-
-  .neste-status {
-    font-size: 11px;
-    color: var(--ink3);
-    text-align: right;
-  }
-
-  .neste-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 16px;
-  }
-
-  .neste-card {
-    border-radius: 8px;
-    border: 1.5px solid;
-    padding: 20px;
-    background: var(--bg2);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    box-shadow: 0 10px 24px rgba(26,26,22,0.06);
-  }
-
-  .neste-card.a { border-color: var(--a); background: var(--a-light); }
-  .neste-card.b { border-color: var(--b); background: var(--b-light); }
-  .neste-card.c { border-color: var(--c); background: var(--c-light); }
-  .neste-card.d { border-color: var(--d); background: var(--d-light); }
-
-  .neste-chip-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .neste-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 100px;
     font-weight: 600;
-    background: rgba(255,255,255,0.7);
+    opacity: 0.07;
+    line-height: 1;
+    pointer-events: none;
   }
+  .neste-box.a { background: var(--a-light); border-color: var(--a); }
+  .neste-box.b { background: var(--b-light); border-color: var(--b); }
+  .neste-box.c { background: var(--c-light); border-color: var(--c); }
+  .neste-box.d { background: var(--d-light); border-color: var(--d); }
 
-  .neste-card h2 {
-    font-size: 18px;
-    line-height: 1.2;
-    font-weight: 500;
+  .neste-left {}
+  .neste-badge {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 2px; font-weight: 500; margin-bottom: 8px;
   }
+  .neste-box.a .neste-badge { background: var(--a); color: #fff; }
+  .neste-box.b .neste-badge { background: var(--b); color: #fff; }
+  .neste-box.c .neste-badge { background: var(--c); color: #fff; }
+  .neste-box.d .neste-badge { background: var(--d); color: #fff; }
 
-  .neste-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
+  .neste-navn { font-size: 18px; font-weight: 500; margin-bottom: 10px; }
+  .neste-detaljer { display: flex; flex-wrap: wrap; gap: 8px; }
   .neste-tag {
-    font-size: 11px;
-    padding: 4px 10px;
-    background: rgba(255,255,255,0.6);
+    font-size: 11px; padding: 4px 10px;
+    background: rgba(255,255,255,0.55);
     border-radius: 3px;
     color: var(--ink2);
   }
-
-  .neste-footer {
-    margin-top: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 16px;
-  }
-
-  .neste-progress {
-    font-size: 11px;
-    color: var(--ink3);
-  }
+  .neste-uke { font-size: 11px; color: var(--ink3); margin-top: 8px; }
 
   .huk-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1.5px solid;
-    border-radius: 6px;
-    background: #fff;
-    padding: 10px 14px;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: transform 0.15s ease;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: #fff; border: 1.5px solid; border-radius: 6px;
+    padding: 16px 20px; cursor: pointer; transition: all 0.15s;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    min-width: 90px;
+  }
+  .neste-box.a .huk-btn { border-color: var(--a); color: var(--a); }
+  .neste-box.b .huk-btn { border-color: var(--b); color: var(--b); }
+  .neste-box.c .huk-btn { border-color: var(--c); color: var(--c); }
+  .neste-box.d .huk-btn { border-color: var(--d); color: var(--d); }
+  .huk-btn:hover { transform: scale(1.04); }
+  .huk-btn:active { transform: scale(0.97); }
+  .huk-icon { font-size: 28px; line-height: 1; }
+
+  .ferdig-melding {
+    text-align: center; padding: 20px;
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 18px; color: var(--green);
   }
 
-  .neste-card.a .huk-btn { border-color: var(--a); color: var(--a); }
-  .neste-card.b .huk-btn { border-color: var(--b); color: var(--b); }
-  .neste-card.c .huk-btn { border-color: var(--c); color: var(--c); }
-  .neste-card.d .huk-btn { border-color: var(--d); color: var(--d); }
+  .nav { display:flex; gap:0; padding:0 40px; border-bottom:1px solid var(--border); background:var(--bg); position:sticky; top:0; z-index:10; }
+  .nav-btn { background:none; border:none; border-bottom:2px solid transparent; padding:14px 18px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink3); cursor:pointer; transition:color 0.2s, border-color 0.2s; }
+  .nav-btn.active { color:var(--ink); border-bottom-color:var(--ink); }
+  .nav-btn:hover { color:var(--ink2); }
 
-  .huk-btn:hover { transform: translateY(-1px); }
+  .main { padding: 36px 40px; max-width: 900px; }
+  .page { display:none; }
+  .page.active { display:block; }
+  .section-label { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink3); margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
 
-  .angre-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border: none;
-    background: none;
-    padding: 4px 0;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-  .angre-btn:hover { color: var(--ink); }
+  .okt-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:40px; }
+  .okt-card { background:var(--bg2); border:1px solid var(--border); border-radius:4px; padding:20px; position:relative; overflow:hidden; transition:transform 0.15s; }
+  .okt-card:hover { transform:translateY(-2px); }
+  .okt-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .okt-card.a::before { background:var(--a); }
+  .okt-card.b::before { background:var(--b); }
+  .okt-card.c::before { background:var(--c); }
+  .okt-card.d::before { background:var(--d); }
+  .okt-letter { font-family:'Fraunces',serif; font-size:48px; font-weight:600; line-height:1; opacity:0.12; position:absolute; top:10px; right:16px; }
+  .okt-card.a .okt-letter { color:var(--a); opacity:0.25; }
+  .okt-card.b .okt-letter { color:var(--b); opacity:0.25; }
+  .okt-card.c .okt-letter { color:var(--c); opacity:0.25; }
+  .okt-badge { display:inline-block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; border-radius:2px; margin-bottom:10px; font-weight:500; }
+  .okt-card.a .okt-badge { background:var(--a-light); color:var(--a); }
+  .okt-card.b .okt-badge { background:var(--b-light); color:var(--b); }
+  .okt-card.c .okt-badge { background:var(--c-light); color:var(--c); }
+  .okt-card.d .okt-badge { background:var(--d-light); color:var(--d); }
+  .okt-name { font-size:14px; font-weight:500; margin-bottom:12px; }
+  .okt-rows { display:flex; flex-direction:column; gap:6px; }
+  .okt-row { display:flex; justify-content:space-between; }
+  .okt-row-label { color:var(--ink3); font-size:11px; }
+  .okt-row-val { font-size:11px; font-weight:500; text-align:right; }
+  .okt-card.a .okt-row-val { color:var(--a); }
+  .okt-card.b .okt-row-val { color:var(--b); }
+  .okt-card.c .okt-row-val { color:var(--c); }
 
-  .reset-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid rgba(180,40,40,0.3);
-    border-radius: 6px;
-    background: none;
-    padding: 10px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #B42828;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-  }
-  .reset-btn:hover { background: rgba(180,40,40,0.06); border-color: #B42828; }
+  .uke-table { width:100%; border-collapse:collapse; margin-bottom:40px; }
+  .uke-table th { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); text-align:left; padding:8px 12px; border-bottom:1px solid var(--border); font-weight:500; }
+  .uke-table td { padding:11px 12px; border-bottom:1px solid var(--border); vertical-align:top; font-size:12px; line-height:1.5; }
+  .uke-table tr:hover td { background:var(--bg2); }
+  .uke-num { font-family:'Fraunces',serif; font-size:18px; font-weight:300; color:var(--ink3); display:block; }
+  .uke-km { font-size:11px; color:var(--ink3); margin-top:2px; }
+  .td-a { color:var(--a); } .td-b { color:var(--b); } .td-c { color:var(--c); } .td-d { color:var(--d); }
+  .hvile-row td { background:rgba(45,106,63,0.04); }
+  .hvile-badge { display:inline-block; background:var(--a-light); color:var(--a); font-size:10px; padding:2px 6px; border-radius:2px; }
+  .done-row td { opacity: 0.45; }
+  .done-check { color: var(--green); font-size: 14px; }
 
-  .see-more-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    padding: 10px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    color: var(--ink);
-  }
+  .soner-grid { display:flex; flex-direction:column; gap:2px; margin-bottom:40px; }
+  .sone-row-el { display:grid; grid-template-columns:12px 60px 1fr auto; align-items:center; gap:16px; padding:14px 16px; border:1px solid var(--border); border-radius:3px; background:var(--bg2); transition:transform 0.1s; }
+  .sone-row-el:hover { transform:translateX(4px); }
+  .sone-color { width:12px; height:12px; border-radius:50%; }
+  .sone-id { font-size:11px; letter-spacing:0.1em; color:var(--ink3); text-transform:uppercase; }
+  .sone-name-el { font-size:12px; font-weight:500; }
+  .sone-desc-el { font-size:11px; color:var(--ink3); margin-top:2px; }
+  .sone-bpm { font-size:14px; font-weight:500; font-family:'Fraunces',serif; }
 
-  .nav {
-    display: flex;
-    gap: 0;
-    padding: 0 40px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+  .logg-form { background:var(--bg2); border:1px solid var(--border); border-radius:4px; padding:24px; margin-bottom:28px; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .form-field { display:flex; flex-direction:column; gap:6px; }
+  .form-label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink3); }
+  input, select, textarea { font-family:'DM Mono',monospace; font-size:12px; background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:9px 12px; color:var(--ink); outline:none; transition:border-color 0.2s; }
+  input:focus, select:focus, textarea:focus { border-color:var(--green); }
+  .save-btn { background:var(--ink); color:var(--bg); border:none; border-radius:3px; padding:11px 24px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:opacity 0.2s, transform 0.1s; width:100%; }
+  .save-btn:hover { opacity:0.85; }
+  .logg-list { display:flex; flex-direction:column; gap:8px; }
+  .logg-entry { display:grid; grid-template-columns:64px 80px 1fr auto; align-items:center; gap:16px; padding:14px 16px; background:var(--bg2); border:1px solid var(--border); border-radius:3px; }
+  .logg-dato { font-size:11px; color:var(--ink3); }
+  .logg-badge { display:inline-block; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:2px; font-weight:500; }
+  .logg-badge.A { background:var(--a-light); color:var(--a); }
+  .logg-badge.B { background:var(--b-light); color:var(--b); }
+  .logg-badge.C { background:var(--c-light); color:var(--c); }
+  .logg-badge.D { background:var(--d-light); color:var(--d); }
+  .logg-detaljer { font-size:12px; }
+  .logg-sub { font-size:11px; color:var(--ink3); margin-top:2px; }
+  .foel-icon { font-size:18px; }
 
-  .nav-btn {
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 14px 18px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-  }
+  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px; }
+  .stat-box { background:var(--bg2); border:1px solid var(--border); border-radius:4px; padding:20px; text-align:center; }
+  .stat-val { font-family:'Fraunces',serif; font-size:36px; font-weight:300; line-height:1; }
+  .stat-lbl { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink3); margin-top:6px; }
+  .bar-chart { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+  .bar-row { display:flex; align-items:center; gap:12px; }
+  .bar-label { font-size:11px; width:90px; flex-shrink:0; color:var(--ink2); }
+  .bar-track { flex:1; height:8px; background:var(--bg2); border-radius:4px; overflow:hidden; border:1px solid var(--border); }
+  .bar-fill { height:100%; border-radius:4px; transition:width 0.6s cubic-bezier(.4,0,.2,1); }
+  .bar-val { font-size:11px; width:52px; text-align:right; color:var(--ink3); }
+  .empty-state { text-align:center; color:var(--ink3); font-size:12px; padding:40px 0; font-style:italic; }
 
-  .nav-btn.active {
-    color: var(--ink);
-    border-bottom-color: var(--ink);
-  }
+  @keyframes fadeSlide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .neste-box { animation: fadeSlide 0.35s ease; }
 
-  .nav-btn:hover { color: var(--ink2); }
-
-  .main { padding: 36px 40px 60px; max-width: 1100px; }
-  .page { display: none; }
-  .page.active { display: block; }
-
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .okt-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-
-  .okt-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.15s;
-  }
-
-  .okt-card:hover { transform: translateY(-2px); }
-  .okt-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .okt-card.a::before { background: var(--a); }
-  .okt-card.b::before { background: var(--b); }
-  .okt-card.c::before { background: var(--c); }
-  .okt-card.d::before { background: var(--d); }
-
-  .okt-letter { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 600; line-height: 1; opacity: 0.12; position: absolute; top: 10px; right: 16px; }
-  .okt-card.a .okt-letter { color: var(--a); opacity: 0.25; }
-  .okt-card.b .okt-letter { color: var(--b); opacity: 0.25; }
-  .okt-card.c .okt-letter { color: var(--c); opacity: 0.25; }
-  .okt-card.d .okt-letter { color: var(--d); opacity: 0.25; }
-
-  .okt-badge { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; margin-bottom: 10px; font-weight: 500; }
-  .okt-card.a .okt-badge { background: var(--a-light); color: var(--a); }
-  .okt-card.b .okt-badge { background: var(--b-light); color: var(--b); }
-  .okt-card.c .okt-badge { background: var(--c-light); color: var(--c); }
-  .okt-card.d .okt-badge { background: var(--d-light); color: var(--d); }
-  .okt-name { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
-  .okt-rows { display: flex; flex-direction: column; gap: 6px; }
-  .okt-row { display: flex; justify-content: space-between; }
-  .okt-row-label { color: var(--ink3); font-size: 11px; }
-  .okt-row-val { font-size: 11px; font-weight: 500; text-align: right; }
-  .okt-card.a .okt-row-val { color: var(--a); }
-  .okt-card.b .okt-row-val { color: var(--b); }
-  .okt-card.c .okt-row-val { color: var(--c); }
-
-  .uke-plan-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 14px;
-    margin-bottom: 40px;
-  }
-
-  .uke-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: box-shadow 0.15s;
-  }
-
-  .uke-card.current-card {
-    border-color: var(--a);
-    box-shadow: 0 0 0 3px var(--a-light);
-  }
-
-  .uke-card.done-card { opacity: 0.55; }
-
-  .uke-card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .uke-card-head-left { display: flex; align-items: center; gap: 8px; }
-
-  .uke-card-num {
-    font-family: 'Fraunces', serif;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .uke-card-km { font-size: 11px; color: var(--ink3); }
-
-  .uke-card-row {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    border-left: 3px solid transparent;
-    font-size: 12px;
-    color: var(--ink2);
-    line-height: 1.5;
-  }
-  .uke-card-row:last-child { border-bottom: none; }
-  .uke-card-row.a { border-left-color: var(--a); }
-  .uke-card-row.b { border-left-color: var(--b); }
-  .uke-card-row.c { border-left-color: var(--c); }
-
-  .uke-row-type {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    width: 14px;
-  }
-  .uke-card-row.a .uke-row-type { color: var(--a); }
-  .uke-card-row.b .uke-row-type { color: var(--b); }
-  .uke-card-row.c .uke-row-type { color: var(--c); }
-
-  .uke-row-done { color: var(--green); font-size: 11px; flex-shrink: 0; }
-
-  .hvile-badge { display: inline-block; background: var(--a-light); color: var(--a); font-size: 10px; padding: 2px 6px; border-radius: 2px; }
-
-  @media (max-width: 700px) {
-    .uke-plan-grid { grid-template-columns: 1fr; }
-  }
-
-  .soner-grid { display: flex; flex-direction: column; gap: 2px; margin-bottom: 40px; }
-  .sone-row-el { display: grid; grid-template-columns: 12px 60px 1fr auto; align-items: center; gap: 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 3px; background: var(--bg2); transition: transform 0.1s; }
-  .sone-row-el:hover { transform: translateX(4px); }
-  .sone-color { width: 12px; height: 12px; border-radius: 50%; }
-  .sone-id { font-size: 11px; letter-spacing: 0.1em; color: var(--ink3); text-transform: uppercase; }
-  .sone-name-el { font-size: 12px; font-weight: 500; }
-  .sone-desc-el { font-size: 11px; color: var(--ink3); margin-top: 2px; }
-  .sone-bpm { font-size: 14px; font-weight: 500; font-family: 'Fraunces', serif; }
-
-  .profile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .profile-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 18px;
-  }
-
-  .profile-icon { font-size: 20px; margin-bottom: 10px; }
-  .profile-stat-number { font-family: 'Fraunces', serif; font-size: 34px; line-height: 1; margin-bottom: 8px; }
-  .profile-stat-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 6px; }
-  .profile-stat-copy { font-size: 12px; color: var(--ink2); line-height: 1.7; }
-
-  .profile-callout {
-    margin-top: 16px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 18px 20px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .profile-callout h3 { font-size: 14px; font-weight: 500; }
-  .profile-callout p { font-size: 12px; color: var(--ink2); line-height: 1.8; }
-
-  .history-layout {
-    display: grid;
-    grid-template-columns: minmax(300px, 1fr) 1.2fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  .history-form,
-  .history-panel {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 24px;
-  }
-
-  .form-header {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 18px;
-  }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .form-field { display: flex; flex-direction: column; gap: 6px; }
-  .form-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); }
-
-  input, select, textarea {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 9px 12px;
-    color: var(--ink);
-    outline: none;
-  }
-
-  input:focus, select:focus, textarea:focus { border-color: var(--green); }
-
-  .save-btn {
-    background: var(--ink);
-    color: var(--bg);
-    border: none;
-    border-radius: 3px;
-    padding: 11px 24px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  .history-summary {
-    margin-bottom: 18px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .summary-pill {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 4px 12px;
-    font-size: 11px;
-    color: var(--ink2);
-  }
-
-  .history-list { display: flex; flex-direction: column; gap: 14px; }
-
-  .history-entry {
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    background: #fff;
-  }
-  .history-entry.type-A { border-left-color: var(--a); }
-  .history-entry.type-B { border-left-color: var(--b); }
-  .history-entry.type-C { border-left-color: var(--c); }
-  .history-entry.type-D { border-left-color: var(--d); }
-
-  .history-entry-head {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding: 10px 16px;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .history-entry-body { padding: 14px 16px; background: #fff; }
-
-  .history-entry-foot {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    padding: 10px 16px;
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-  }
-
-  .history-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .history-stat-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); }
-  .history-stat-val { font-size: 12px; font-weight: 500; color: var(--ink); }
-
-  .history-badge {
-    display: inline-flex;
-    align-items: center;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    padding: 3px 8px;
-    font-weight: 600;
-  }
-  .history-badge.plan { background: var(--a-light); color: var(--a); }
-  .history-badge.manual { background: var(--b-light); color: var(--b); }
-
-  .history-type-chip {
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 2px 8px;
-  }
-
-  .history-dato { font-size: 11px; color: var(--ink3); }
-  .history-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-  .history-copy { font-size: 12px; color: var(--ink2); line-height: 1.7; margin-bottom: 4px; }
-  .foel-icon { font-size: 20px; }
-
-  .empty-state {
-    text-align: center;
-    color: var(--ink3);
-    font-size: 12px;
-    padding: 40px 0;
-    font-style: italic;
-  }
-
-  .log-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg2);
-    padding: 10px 16px;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink);
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .log-toggle-btn:hover { border-color: var(--green); color: var(--green); background: var(--a-light); }
-  .log-toggle-btn.open { border-color: var(--green); color: var(--green); background: var(--a-light); }
-
-  .upcoming-list { margin-top: 20px; max-width: 560px; }
-  .upcoming-list-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink3); margin-bottom: 10px; }
-  .upcoming-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg2); margin-bottom: 6px; }
-  .upcoming-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .upcoming-dot.a { background: var(--a); }
-  .upcoming-dot.b { background: var(--b); }
-  .upcoming-dot.c { background: var(--c); }
-  .upcoming-dot.d { background: var(--d); }
-  .upcoming-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-  .upcoming-name { font-size: 12px; font-weight: 500; }
-  .upcoming-sub { font-size: 10px; color: var(--ink3); letter-spacing: 0.06em; }
-  .upcoming-detail { font-size: 11px; color: var(--ink2); }
-
-  @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .neste-card { animation: fadeSlide 0.3s ease; }
-
-  @media (max-width: 900px) {
-    .history-layout {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .header, .neste-wrap, .main, .nav { padding-left: 20px; padding-right: 20px; }
-    .header-title { font-size: 30px; }
-    .neste-grid { grid-template-columns: 1fr; }
-    .nav { overflow-x: auto; }
-    .nav-btn { padding: 12px 12px; font-size: 10px; }
-    .form-grid { grid-template-columns: 1fr; }
-    .history-entry { grid-template-columns: 1fr; }
-    .neste-heading { display: block; }
-    .neste-status { text-align: left; margin-top: 8px; }
+  @media (max-width: 600px) {
+    .header { padding:28px 20px 20px; }
+    .header-title { font-size:28px; }
+    .neste-wrap { padding:20px; }
+    .neste-box { grid-template-columns:1fr; }
+    .huk-btn { flex-direction:row; justify-content:center; width:100%; }
+    .nav { padding:0 16px; overflow-x:auto; }
+    .nav-btn { padding:12px 12px; font-size:10px; }
+    .main { padding:24px 20px; }
+    .form-grid { grid-template-columns:1fr; }
+    .logg-entry { grid-template-columns:52px 1fr auto; }
+    .stats-row { grid-template-columns:1fr 1fr; }
   }
 </style>
 </head>
@@ -718,36 +261,34 @@
 <div class="header">
   <div class="header-label">Sesong 2026</div>
   <h1 class="header-title">ai<em>run</em></h1>
-  <div class="header-copy">
-    Følg planen, fullfør økter og hold styr på historikken fra samme sted. Profilinformasjon, progresjon og neste økter er samlet på denne siden.
+  <div class="header-meta">
+    <div class="meta-pill">Maks <span>193 bpm</span></div>
+    <div class="meta-pill">Hvile <span>66 bpm</span></div>
+    <div class="meta-pill">VO2max <span>47</span></div>
+    <div class="meta-pill">Voldsløkka</div>
   </div>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">
+    <span class="theme-icon">🌙</span>
+    <span id="theme-text">Mørkt tema</span>
+  </button>
 </div>
 
 <div class="neste-wrap">
-  <div class="neste-heading">
-    <div>
-      <div class="neste-label">Neste økt</div>
-      <div class="neste-subtitle">Fullfør en økt for å flytte den til historikken.</div>
-    </div>
-    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-      <div class="neste-status" id="neste-status"></div>
-      <div id="angre-wrap"></div>
-    </div>
-  </div>
+  <div class="neste-label">Neste økt</div>
   <div id="neste-container"></div>
 </div>
 
 <nav class="nav">
-  <button class="nav-btn active" onclick="showPage('historikk', this)">Historikk</button>
-  <button class="nav-btn" onclick="showPage('program', this)">12-ukers plan</button>
-  <button class="nav-btn" onclick="showPage('plan', this)">Økttyper</button>
-  <button class="nav-btn" onclick="showPage('soner', this)">Pulssoner</button>
-  <button class="nav-btn" onclick="showPage('profil', this)">Profil</button>
+  <button class="nav-btn active" onclick="showPage('plan',this)">Økttyper</button>
+  <button class="nav-btn" onclick="showPage('program',this)">12-ukers plan</button>
+  <button class="nav-btn" onclick="showPage('soner',this)">Pulssoner</button>
+  <button class="nav-btn" onclick="showPage('logg',this)">Logg økt</button>
+  <button class="nav-btn" onclick="showPage('fremgang',this)">Fremgang</button>
 </nav>
 
 <main class="main">
 
-<div id="plan" class="page">
+<div id="plan" class="page active">
   <div class="section-label">De fire øktene dine</div>
   <div class="okt-grid">
     <div class="okt-card a">
@@ -755,10 +296,10 @@
       <div class="okt-badge">Løp A</div>
       <div class="okt-name">Langtur ute</div>
       <div class="okt-rows">
-        <div class="okt-row"><span class="okt-row-label">Sted</span><span class="okt-row-val">Ute</span></div>
+        <div class="okt-row"><span class="okt-row-label">Sted</span><span class="okt-row-val">Voldsløkka</span></div>
         <div class="okt-row"><span class="okt-row-label">Start</span><span class="okt-row-val">3,5 km</span></div>
-        <div class="okt-row"><span class="okt-row-label">Tempo</span><span class="okt-row-val">6:30–7:00 /km</span></div>
-        <div class="okt-row"><span class="okt-row-label">Sone</span><span class="okt-row-val">S1 &lt;155 bpm</span></div>
+        <div class="okt-row"><span class="okt-row-label">Tempo</span><span class="okt-row-val">6:25–7:11 /km</span></div>
+        <div class="okt-row"><span class="okt-row-label">Sone</span><span class="okt-row-val">S1 · 142–150 bpm</span></div>
         <div class="okt-row"><span class="okt-row-label">Mål</span><span class="okt-row-val">Bygg distanse</span></div>
       </div>
     </div>
@@ -767,11 +308,11 @@
       <div class="okt-badge">Løp B</div>
       <div class="okt-name">Intervaller (mølla)</div>
       <div class="okt-rows">
-        <div class="okt-row"><span class="okt-row-label">Drag</span><span class="okt-row-val">5 × 3 min</span></div>
-        <div class="okt-row"><span class="okt-row-label">Fart</span><span class="okt-row-val">9,5 km/t</span></div>
-        <div class="okt-row"><span class="okt-row-label">Stigning</span><span class="okt-row-val">2%</span></div>
-        <div class="okt-row"><span class="okt-row-label">Hvile</span><span class="okt-row-val">2 min gange</span></div>
-        <div class="okt-row"><span class="okt-row-label">Sone</span><span class="okt-row-val">Toppe S4</span></div>
+        <div class="okt-row"><span class="okt-row-label">Fase 1</span><span class="okt-row-val">400m drag</span></div>
+        <div class="okt-row"><span class="okt-row-label">Fase 2</span><span class="okt-row-val">600m drag</span></div>
+        <div class="okt-row"><span class="okt-row-label">Fase 3</span><span class="okt-row-val">800–1000m drag</span></div>
+        <div class="okt-row"><span class="okt-row-label">Pause</span><span class="okt-row-val">Rolig jogg</span></div>
+        <div class="okt-row"><span class="okt-row-label">Sone</span><span class="okt-row-val">S3 · 170–176 bpm</span></div>
       </div>
     </div>
     <div class="okt-card c">
@@ -779,11 +320,11 @@
       <div class="okt-badge">Løp C</div>
       <div class="okt-name">Moderat kontinuerlig</div>
       <div class="okt-rows">
-        <div class="okt-row"><span class="okt-row-label">Start</span><span class="okt-row-val">3 km</span></div>
-        <div class="okt-row"><span class="okt-row-label">Tempo</span><span class="okt-row-val">5:30–6:00 /km</span></div>
-        <div class="okt-row"><span class="okt-row-label">Sone</span><span class="okt-row-val">S2–3</span></div>
-        <div class="okt-row"><span class="okt-row-label">Puls</span><span class="okt-row-val">157–176 bpm</span></div>
+        <div class="okt-row"><span class="okt-row-label">Start</span><span class="okt-row-val">1,5 km</span></div>
+        <div class="okt-row"><span class="okt-row-label">Tempo</span><span class="okt-row-val">4:45–6:13 /km</span></div>
+        <div class="okt-row"><span class="okt-row-label">Sone</span><span class="okt-row-val">S2 · 157–165 bpm</span></div>
         <div class="okt-row"><span class="okt-row-label">Sted</span><span class="okt-row-val">Ute / mølla</span></div>
+        <div class="okt-row"><span class="okt-row-label">Mål</span><span class="okt-row-val">Utholdenhet</span></div>
       </div>
     </div>
     <div class="okt-card d">
@@ -791,11 +332,11 @@
       <div class="okt-badge">Løp D</div>
       <div class="okt-name">Rolig jogg (valgfritt)</div>
       <div class="okt-rows">
-        <div class="okt-row"><span class="okt-row-label">Varighet</span><span class="okt-row-val">20–25 min</span></div>
-        <div class="okt-row"><span class="okt-row-label">Puls</span><span class="okt-row-val">&lt;130 bpm</span></div>
-        <div class="okt-row"><span class="okt-row-label">Tempo</span><span class="okt-row-val">Rolig</span></div>
+        <div class="okt-row"><span class="okt-row-label">Distanse</span><span class="okt-row-val">2,0–3,0 km</span></div>
+        <div class="okt-row"><span class="okt-row-label">Puls</span><span class="okt-row-val">&lt;142 bpm</span></div>
+        <div class="okt-row"><span class="okt-row-label">Tempo</span><span class="okt-row-val">7:15–8:15 /km</span></div>
         <div class="okt-row"><span class="okt-row-label">Formål</span><span class="okt-row-val">Restitusjon</span></div>
-        <div class="okt-row"><span class="okt-row-label">Krav</span><span class="okt-row-val">Valgfritt</span></div>
+        <div class="okt-row"><span class="okt-row-label">Krav</span><span class="okt-row-val">Valgfritt ✦</span></div>
       </div>
     </div>
   </div>
@@ -803,17 +344,28 @@
 
 <div id="program" class="page">
   <div class="section-label">12 ukers progresjon</div>
-  <div class="uke-plan-grid" id="uke-plan-container"></div>
+  <table class="uke-table">
+    <thead>
+      <tr>
+        <th>Uke</th>
+        <th class="td-a">Løp A – Langtur</th>
+        <th class="td-b">Løp B – Intervaller</th>
+        <th class="td-c">Løp C – Moderat</th>
+        <th>Totalt</th>
+      </tr>
+    </thead>
+    <tbody id="uke-tbody"></tbody>
+  </table>
 </div>
 
 <div id="soner" class="page">
   <div class="section-label">Pulssoner – Karvonen / Garmin</div>
   <div class="soner-grid">
     <div class="sone-row-el"><div class="sone-color" style="background:#5AAF5A"></div><div class="sone-id">S1</div><div><div class="sone-name-el">Lett aerob</div><div class="sone-desc-el">Løp A – langtur og oppvarming</div></div><div class="sone-bpm" style="color:#2D6A3F">142–157</div></div>
-    <div class="sone-row-el"><div class="sone-color" style="background:#F5C842"></div><div class="sone-id">S2</div><div><div class="sone-name-el">Moderat aerob</div><div class="sone-desc-el">Løp C – komfortabelt krevende</div></div><div class="sone-bpm" style="color:#8B6A00">157–169</div></div>
-    <div class="sone-row-el"><div class="sone-color" style="background:#EF9F27"></div><div class="sone-id">S3</div><div><div class="sone-name-el">Aerob terskel</div><div class="sone-desc-el">Løp C – øvre del, tempoøkt</div></div><div class="sone-bpm" style="color:#8B4A00">169–176</div></div>
-    <div class="sone-row-el"><div class="sone-color" style="background:#E24B4A"></div><div class="sone-id">S4</div><div><div class="sone-name-el">Anaerob terskel</div><div class="sone-desc-el">Løp B – topp på intervallene</div></div><div class="sone-bpm" style="color:#A32D2D">176–183</div></div>
-    <div class="sone-row-el"><div class="sone-color" style="background:#A32D2D"></div><div class="sone-id">S5</div><div><div class="sone-name-el">Maks</div><div class="sone-desc-el">Kortvarig spurt, sjelden brukt</div></div><div class="sone-bpm" style="color:#A32D2D">183–193</div></div>
+    <div class="sone-row-el"><div class="sone-color" style="background:#F5C842"></div><div class="sone-id">S2</div><div><div class="sone-name-el">Moderat aerob</div><div class="sone-desc-el">Løp C – komfortabelt krevende</div></div><div class="sone-bpm" style="color:#8B6A00">157–170</div></div>
+    <div class="sone-row-el"><div class="sone-color" style="background:#EF9F27"></div><div class="sone-id">S3</div><div><div class="sone-name-el">Aerob terskel</div><div class="sone-desc-el">Løp B – arbeidsperiode i drag</div></div><div class="sone-bpm" style="color:#8B4A00">170–176</div></div>
+    <div class="sone-row-el"><div class="sone-color" style="background:#E24B4A"></div><div class="sone-id">S4</div><div><div class="sone-name-el">Anaerob terskel</div><div class="sone-desc-el">Løp B – toppintensitet siste drag</div></div><div class="sone-bpm" style="color:#A32D2D">176–183</div></div>
+    <div class="sone-row-el"><div class="sone-color" style="background:#A32D2D"></div><div class="sone-id">S5</div><div><div class="sone-name-el">Maks</div><div class="sone-desc-el">Kun ved konkurranser</div></div><div class="sone-bpm" style="color:#A32D2D">183–193</div></div>
   </div>
   <div class="section-label">Karvonen-formel</div>
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:20px;font-size:12px;line-height:2;color:var(--ink2);">
@@ -823,493 +375,301 @@
   </div>
 </div>
 
-<div id="profil" class="page">
-  <div class="section-label">Profil</div>
-  <div class="profile-grid" id="profile-grid"></div>
-  <div class="profile-callout" id="profile-callout"></div>
-  <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
-    <div class="section-label" style="margin-bottom: 12px;">Nullstill</div>
-    <p style="font-size:12px; color:var(--ink2); line-height:1.7; margin-bottom:16px;">Starter programmet helt på nytt. All historikk og fremdrift slettes permanent.</p>
-    <button class="reset-btn" onclick="resetProgram()">Nullstill hele programmet</button>
+<div id="logg" class="page">
+  <div class="logg-form">
+    <div class="section-label">Ny økt</div>
+    <div class="form-grid">
+      <div class="form-field"><label class="form-label">Dato</label><input type="date" id="l-dato"></div>
+      <div class="form-field"><label class="form-label">Økttype</label>
+        <select id="l-okt">
+          <option value="A">Løp A – Langtur</option>
+          <option value="B">Løp B – Intervaller</option>
+          <option value="C">Løp C – Moderat</option>
+          <option value="D">Løp D – Rolig</option>
+        </select>
+      </div>
+      <div class="form-field"><label class="form-label">Distanse (km)</label><input type="number" id="l-km" step="0.1" min="0" placeholder="3.5"></div>
+      <div class="form-field"><label class="form-label">Snittempo (min:sek/km)</label><input type="text" id="l-tempo" placeholder="6:30"></div>
+      <div class="form-field"><label class="form-label">Snittspuls (bpm)</label><input type="number" id="l-puls" min="60" max="200" placeholder="148"></div>
+      <div class="form-field"><label class="form-label">Følelse</label>
+        <select id="l-foel">
+          <option value="lett">😌 Lett</option>
+          <option value="passe" selected>😊 Passe</option>
+          <option value="tungt">😅 Tungt</option>
+          <option value="hardt">😤 Hardt</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field" style="margin-bottom:16px"><label class="form-label">Notater</label><textarea id="l-notat" rows="2" placeholder="Hvordan gikk det?"></textarea></div>
+    <button class="save-btn" onclick="saveLog()">Lagre økt</button>
   </div>
+  <div class="section-label">Logghistorikk</div>
+  <div class="logg-list" id="logg-list"><div class="empty-state">Ingen loggede økter ennå</div></div>
 </div>
 
-<div id="historikk" class="page active">
-  <div class="section-label">Historikk</div>
-
-  <div style="margin-bottom: 20px;">
-    <button class="log-toggle-btn" id="log-toggle-btn" onclick="toggleLogForm()">+ Logg ny økt</button>
+<div id="fremgang" class="page">
+  <div class="section-label">Totaloversikt</div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val" id="s-km">0</div><div class="stat-lbl">km totalt</div></div>
+    <div class="stat-box"><div class="stat-val" id="s-okter">0</div><div class="stat-lbl">økter</div></div>
+    <div class="stat-box"><div class="stat-val" id="s-snitt">–</div><div class="stat-lbl">snitt km</div></div>
   </div>
-
-  <div id="log-form-wrap" style="display:none; margin-bottom: 24px;">
-    <div class="history-form">
-      <div class="form-header">Logg en ny økt</div>
-      <div class="form-grid">
-        <div class="form-field"><label class="form-label">Dato</label><input type="date" id="l-dato"></div>
-        <div class="form-field"><label class="form-label">Økttype</label>
-          <select id="l-okt">
-            <option value="A">Løp A – Langtur</option>
-            <option value="B">Løp B – Intervaller</option>
-            <option value="C">Løp C – Moderat</option>
-            <option value="D">Løp D – Rolig</option>
-          </select>
-        </div>
-        <div class="form-field"><label class="form-label">Distanse (km)</label><input type="number" id="l-km" step="0.1" min="0" placeholder="3.5"></div>
-        <div class="form-field"><label class="form-label">Snittempo (min:sek/km)</label><input type="text" id="l-tempo" placeholder="6:30"></div>
-        <div class="form-field"><label class="form-label">Snittspuls (bpm)</label><input type="number" id="l-puls" min="60" max="200" placeholder="148"></div>
-        <div class="form-field"><label class="form-label">Følelse</label>
-          <select id="l-foel">
-            <option value="lett">😌 Lett</option>
-            <option value="passe" selected>😊 Passe</option>
-            <option value="tungt">😅 Tungt</option>
-            <option value="hardt">😤 Hardt</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-field" style="margin-bottom:16px"><label class="form-label">Notater</label><textarea id="l-notat" rows="2" placeholder="Hvordan gikk det?"></textarea></div>
-      <button class="save-btn" onclick="saveLog()">Lagre økt</button>
-    </div>
-  </div>
-
-  <div class="history-summary" id="history-summary"></div>
-  <div class="history-list" id="history-list"></div>
+  <div class="section-label">Øktfordeling</div>
+  <div class="bar-chart" id="bar-chart"><div class="empty-state">Ingen data ennå</div></div>
+  <div class="section-label" style="margin-top:28px">Siste 8 km-økter</div>
+  <div class="bar-chart" id="hist-chart"><div class="empty-state">Ingen km-data ennå</div></div>
 </div>
 
 </main>
 
 <script>
 const SEKVENS = [
-  { type: 'A', navn: 'Langtur ute', detaljer: ['3,5 km', '6:30–7:00 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['5 × 3 min', '9,5 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['3 km', '5:30–6:00 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['4 km', '6:15–6:45 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['6 × 3 min', '9,5 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['3,5 km', '5:20–5:50 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['4,5 km', '6:00–6:30 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['6 × 3 min', '10 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['4 km', '5:15–5:45 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Hvileuke – Langtur rolig', detaljer: ['3 km', 'Rolig tempo', 'S1 · <145 bpm', 'Ute'] },
-  { type: 'B', navn: 'Hvileuke – Lett intervall', detaljer: ['3 × 3 min lett', '9 km/t', 'Hvile: 2 min gange', 'Lett innsats'] },
-  { type: 'C', navn: 'Hvileuke – Rolig jogg', detaljer: ['2,5 km', 'Rolig', 'Under 150 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['5 km', '5:50–6:20 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['7 × 3 min', '10 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['4,5 km', '5:10–5:40 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['5,5 km', '5:45–6:10 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['7 × 3 min', '10,5 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['5 km', '5:05–5:35 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['6 km', '5:40–6:05 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['8 × 3 min', '10,5 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['5,5 km', '5:00–5:30 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Hvileuke – Langtur rolig', detaljer: ['4 km', 'Rolig tempo', 'S1 · <145 bpm', 'Ute'] },
-  { type: 'B', navn: 'Hvileuke – Lett intervall', detaljer: ['4 × 3 min lett', '9,5 km/t', 'Hvile: 2 min gange', 'Lett innsats'] },
-  { type: 'C', navn: 'Hvileuke – Rolig jogg', detaljer: ['3 km', 'Rolig', 'Under 150 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['7 km', '5:35–6:00 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['8 × 3 min', '11 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['6 km', '4:55–5:25 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['7,5 km', '5:30–5:55 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['9 × 3 min', '11 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['6,5 km', '4:50–5:20 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Langtur ute', detaljer: ['8 km', '5:25–5:50 /km', 'S1 · <155 bpm', 'Ute'] },
-  { type: 'B', navn: 'Intervaller', detaljer: ['9 × 3 min', '11,5 km/t · 2% stigning', 'Hvile: 2 min gange', 'Toppe S4'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['7 km', '4:45–5:15 /km', 'S2–3 · 157–176 bpm', 'Ute / mølla'] },
-  { type: 'A', navn: 'Avslutning – rolig langtur', detaljer: ['5 km', 'Lett tempo', 'S1 · <150 bpm', 'Ute'] },
-  { type: 'B', navn: 'Avslutning – moderat intervall', detaljer: ['5 × 3 min', '10,5 km/t', 'Hvile: 2 min gange', 'Ikke press'] },
-  { type: 'C', navn: 'Moderat kontinuerlig', detaljer: ['4 km', 'Rolig', 'Under 155 bpm', 'Ute / mølla'] }
+  // Uke 1
+  {type:'A', navn:'Langtur ute', detaljer:['3,5 km', '6:25–6:55 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['6 × 400m', '10,0 km/t · mølla', 'Pause: 75 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['1,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 2
+  {type:'A', navn:'Langtur ute', detaljer:['4,0 km', '6:15–6:45 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['6 × 400m', '11,0 km/t · mølla', 'Pause: 75 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['2,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 3
+  {type:'A', navn:'Langtur ute', detaljer:['4,5 km', '6:05–6:35 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['7 × 400m', '11,0 km/t · mølla', 'Pause: 75 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['3,0 km', '5:20–5:50 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 4
+  {type:'A', navn:'Langtur ute', detaljer:['5,0 km', '6:25–6:55 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['8 × 400m', '11,0 km/t · mølla', 'Pause: 75 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['3,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 5
+  {type:'A', navn:'Langtur ute', detaljer:['5,5 km', '6:15–6:45 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['5 × 600m', '10,8 km/t · mølla', 'Pause: 90 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['4,0 km', '5:10–5:40 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 6
+  {type:'A', navn:'Langtur ute', detaljer:['6,0 km', '6:05–6:35 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['5 × 600m', '11,0 km/t · mølla', 'Pause: 90 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['4,5 km', '5:05–5:35 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 7
+  {type:'A', navn:'Langtur ute', detaljer:['6,5 km', '5:55–6:25 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['4 × 800m', '10,3 km/t · mølla', 'Pause: 90 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['5,0 km', '5:00–5:30 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 8 – hvile
+  {type:'A', navn:'Hvileuke – Langtur rolig', detaljer:['4,0 km', '6:25–6:55 /km', 'S1 · rolig', 'Voldsløkka']},
+  {type:'B', navn:'Hvileuke – Lett intervall', detaljer:['5 × 400m lett', '11,0 km/t', 'Pause: 75 sek rolig jogg', 'Ikke press']},
+  {type:'C', navn:'Hvileuke – Rolig jogg', detaljer:['2,5 km', '5:20–5:50 /km', 'Under 157 bpm', 'Ute / mølla']},
+  // Uke 9
+  {type:'A', navn:'Langtur ute', detaljer:['7,0 km', '5:50–6:20 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['4 × 800m', '10,5 km/t · mølla', 'Pause: 90 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['5,5 km', '4:55–5:25 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 10
+  {type:'A', navn:'Langtur ute', detaljer:['7,5 km', '5:45–6:15 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['5 × 800m', '10,5 km/t · mølla', 'Pause: 90 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['6,0 km', '4:50–5:20 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 11
+  {type:'A', navn:'Langtur ute', detaljer:['8,0 km', '5:40–6:10 /km', 'S1 · 142–150 bpm', 'Voldsløkka']},
+  {type:'B', navn:'Intervaller', detaljer:['4 × 1000m', '10,0 km/t · mølla', 'Pause: 120 sek rolig jogg', 'Toppe S3']},
+  {type:'C', navn:'Moderat kontinuerlig', detaljer:['6,5 km', '4:45–5:15 /km', 'S2 · 157–165 bpm', 'Ute / mølla']},
+  // Uke 12 – nedtrapping
+  {type:'A', navn:'Nedtrapping ✈️', detaljer:['3,5 km', '6:25–6:55 /km', 'S1 · lett', 'Voldsløkka']},
+  {type:'B', navn:'Nedtrapping – lett intervall', detaljer:['4 × 400m', '11,0 km/t · mølla', 'Pause: 75 sek rolig jogg', 'Ikke press']},
+  {type:'C', navn:'Nedtrapping – rolig jogg', detaljer:['2,5 km', '5:20–5:50 /km', 'Rolig', 'Ute / mølla']},
 ];
 
 const UKER = [
-  { uke: 1,  a: '3,5 km @ 6:30–7:00',   b: '5×3 min @ 9,5 km/t',   c: '3 km @ 5:30–6:00',   km: 12 },
-  { uke: 2,  a: '4 km @ 6:15–6:45',     b: '6×3 min @ 9,5 km/t',   c: '3,5 km @ 5:20–5:50', km: 14 },
-  { uke: 3,  a: '4,5 km @ 6:00–6:30',   b: '6×3 min @ 10 km/t',    c: '4 km @ 5:15–5:45',   km: 16 },
-  { uke: 4,  a: 'Hvileuke – 3 km rolig', b: '3×3 min lett',         c: '2,5 km rolig',       km: 11, hvile: true },
-  { uke: 5,  a: '5 km @ 5:50–6:20',     b: '7×3 min @ 10 km/t',    c: '4,5 km @ 5:10–5:40', km: 18 },
-  { uke: 6,  a: '5,5 km @ 5:45–6:10',   b: '7×3 min @ 10,5 km/t',  c: '5 km @ 5:05–5:35',   km: 20 },
-  { uke: 7,  a: '6 km @ 5:40–6:05',     b: '8×3 min @ 10,5 km/t',  c: '5,5 km @ 5:00–5:30', km: 22 },
-  { uke: 8,  a: 'Hvileuke – 4 km rolig', b: '4×3 min lett',         c: '3 km rolig',         km: 14, hvile: true },
-  { uke: 9,  a: '7 km @ 5:35–6:00',     b: '8×3 min @ 11 km/t',    c: '6 km @ 4:55–5:25',   km: 24 },
-  { uke: 10, a: '7,5 km @ 5:30–5:55',   b: '9×3 min @ 11 km/t',    c: '6,5 km @ 4:50–5:20', km: 26 },
-  { uke: 11, a: '8 km @ 5:25–5:50',     b: '9×3 min @ 11,5 km/t',  c: '7 km @ 4:45–5:15',   km: 28 },
-  { uke: 12, a: '5 km lett (avslutning)', b: '5×3 min moderat',     c: '4 km rolig',         km: 18 }
+  {uke:1,  a:'3,5 km @ 6:25–6:55',    b:'6×400m @ 10,0 km/t',   c:'1,5 km @ 5:20–5:50',  km:9},
+  {uke:2,  a:'4,0 km @ 6:15–6:45',    b:'6×400m @ 11,0 km/t',   c:'2,5 km @ 5:20–5:50',  km:10},
+  {uke:3,  a:'4,5 km @ 6:05–6:35',    b:'7×400m @ 11,0 km/t',   c:'3,0 km @ 5:20–5:50',  km:12},
+  {uke:4,  a:'5,0 km @ 6:25–6:55',    b:'8×400m @ 11,0 km/t',   c:'3,5 km @ 5:20–5:50',  km:13},
+  {uke:5,  a:'5,5 km @ 6:15–6:45',    b:'5×600m @ 10,8 km/t',   c:'4,0 km @ 5:10–5:40',  km:14},
+  {uke:6,  a:'6,0 km @ 6:05–6:35',    b:'5×600m @ 11,0 km/t',   c:'4,5 km @ 5:05–5:35',  km:16},
+  {uke:7,  a:'6,5 km @ 5:55–6:25',    b:'4×800m @ 10,3 km/t',   c:'5,0 km @ 5:00–5:30',  km:17},
+  {uke:8,  a:'Hvileuke – 4,0 km rolig',b:'5×400m lett',           c:'2,5 km rolig',         km:11, hvile:true},
+  {uke:9,  a:'7,0 km @ 5:50–6:20',    b:'4×800m @ 10,5 km/t',   c:'5,5 km @ 4:55–5:25',  km:18},
+  {uke:10, a:'7,5 km @ 5:45–6:15',    b:'5×800m @ 10,5 km/t',   c:'6,0 km @ 4:50–5:20',  km:20},
+  {uke:11, a:'8,0 km @ 5:40–6:10',    b:'4×1000m @ 10,0 km/t',  c:'6,5 km @ 4:45–5:15',  km:21},
+  {uke:12, a:'Nedtrapping – 3,5 km',  b:'4×400m lett',            c:'2,5 km rolig ✈️',      km:8},
 ];
 
-const colors = { A: '#2D6A3F', B: '#1A4A7A', C: '#8B4A00', D: '#5A5A52' };
-const foelIkon = { lett: '😌', passe: '😊', tungt: '😅', hardt: '😤' };
+const colors = {A:'#2D6A3F', B:'#1A4A7A', C:'#8B4A00', D:'#5A5A52'};
+const foelIkon = {lett:'😌', passe:'😊', tungt:'😅', hardt:'😤'};
 
+const themeToggle = document.getElementById('theme-toggle');
+const themeText = document.getElementById('theme-text');
+
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+  themeToggle.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+  themeText.textContent = theme === 'dark' ? 'Lyst tema' : 'Mørkt tema';
+  localStorage.setItem('lp-theme', theme);
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('lp-theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+}
+
+themeToggle.addEventListener('click', () => {
+  const current = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(current);
+});
 
 function getIdx() { return parseInt(localStorage.getItem('lp_idx') || '0'); }
 function setIdx(i) { localStorage.setItem('lp_idx', i); }
-
-function getLogs() {
-  try {
-    return JSON.parse(localStorage.getItem('lp2_logs') || '[]');
-  } catch {
-    return [];
-  }
-}
-
-function saveLogs(logs) {
-  try {
-    localStorage.setItem('lp2_logs', JSON.stringify(logs));
-  } catch {}
-}
-
-function normalizeLog(log) {
-  const isPlan = log.source === 'plan' || log.kind === 'plan' || (log.notat && log.notat.includes('uke'));
-  return {
-    id: log.id || Date.now(),
-    dato: log.dato || new Date().toISOString().slice(0, 10),
-    okt: log.okt || 'A',
-    km: log.km ?? null,
-    tempo: log.tempo || '',
-    puls: log.puls || '',
-    foel: log.foel || 'passe',
-    notat: log.notat || '',
-    source: isPlan ? 'plan' : 'manual',
-    kind: isPlan ? 'plan' : 'manual',
-    title: log.title || (isPlan ? 'Planlagt økt' : 'Manuell økt'),
-    details: Array.isArray(log.details) ? log.details : []
-  };
-}
-
-function getHistory() {
-  return getLogs().map(normalizeLog).sort((a, b) => new Date(b.dato) - new Date(a.dato));
-}
-
-function currentWeek() {
-  return Math.floor(getIdx() / 3) + 1;
-}
-
+function getLogs() { try { return JSON.parse(localStorage.getItem('lp2_logs') || '[]'); } catch { return []; } }
+function saveLogs(l) { try { localStorage.setItem('lp2_logs', JSON.stringify(l)); } catch {} }
 
 function renderNeste() {
   const idx = getIdx();
   const container = document.getElementById('neste-container');
-  const status = document.getElementById('neste-status');
-
   if (idx >= SEKVENS.length) {
-    container.innerHTML = '<div class="empty-state">🎉 Du har fullført alle 12 ukene – godt jobbet!</div>';
-    status.textContent = 'Planen er ferdig';
+    container.innerHTML = '<div class="ferdig-melding">🎉 Du har fullført alle 12 ukene – godt jobbet!</div>';
     return;
   }
-
-  const remaining = SEKVENS.length - idx;
-  const nextOkt = SEKVENS[idx];
+  const okt = SEKVENS[idx];
   const ukeNr = Math.floor(idx / 3) + 1;
-  status.textContent = `${remaining} økter gjenstår · Uke ${currentWeek()}`;
-
-  const angreWrap = document.getElementById('angre-wrap');
-  if (angreWrap) {
-    angreWrap.innerHTML = idx > 0
-      ? `<button class="angre-btn" onclick="angreSiste()">↩ Angre siste økt</button>`
-      : '';
-  }
-
   container.innerHTML = `
-    <div style="max-width: 560px;">
-      <article class="neste-card ${nextOkt.type.toLowerCase()}">
-        <div class="neste-chip-row">
-          <span class="neste-badge">Neste økt</span>
-          <span class="neste-badge">Løp ${nextOkt.type} · Uke ${ukeNr}</span>
+    <div class="neste-box ${okt.type.toLowerCase()}" data-letter="${okt.type}">
+      <div class="neste-left">
+        <div class="neste-badge">Løp ${okt.type} · Uke ${ukeNr}</div>
+        <div class="neste-navn">${okt.navn}</div>
+        <div class="neste-detaljer">
+          ${okt.detaljer.map(d => `<span class="neste-tag">${d}</span>`).join('')}
         </div>
-        <div>
-          <h2>${nextOkt.navn}</h2>
-          <div class="neste-meta">
-            ${nextOkt.detaljer.map(d => `<span class="neste-tag">${d}</span>`).join('')}
-          </div>
-        </div>
-        <div class="neste-footer">
-          <div class="neste-progress">Økt ${idx + 1} av ${SEKVENS.length}</div>
-          <button class="huk-btn" type="button" onclick="fullforOkt(${idx})">✓ Fullført</button>
-        </div>
-      </article>
+        <div class="neste-uke">Økt ${idx + 1} av ${SEKVENS.length} · ${SEKVENS.length - idx - 1} gjenstår</div>
+      </div>
+      <button class="huk-btn" onclick="fullforOkt()">
+        <span class="huk-icon">✓</span>
+        <span>Fullført</span>
+      </button>
     </div>
   `;
 }
 
-function fullforOkt(index) {
-  const planned = SEKVENS[index];
-  if (!planned) return;
-
-  const history = getHistory();
-  history.unshift({
-    id: Date.now(),
-    dato: new Date().toISOString().slice(0, 10),
-    okt: planned.type,
-    km: null,
-    tempo: '',
-    puls: '',
-    foel: 'passe',
-    notat: `${planned.navn} – uke ${Math.floor(index / 3) + 1}`,
-    source: 'plan',
-    kind: 'plan',
-    title: planned.navn,
-    details: planned.detaljer
+function fullforOkt() {
+  const idx = getIdx();
+  const okt = SEKVENS[idx];
+  const logs = getLogs();
+  logs.unshift({
+    dato: new Date().toISOString().slice(0,10),
+    okt: okt.type,
+    km: null, tempo: '', puls: '', foel: 'passe',
+    notat: okt.navn + ' – uke ' + (Math.floor(idx/3)+1),
+    id: Date.now()
   });
-
-  saveLogs(history);
-  setIdx(index + 1);
+  saveLogs(logs);
+  setIdx(idx + 1);
   renderNeste();
   renderUkePlan();
-  renderProfil();
-  renderHistorikk();
 }
 
 function renderUkePlan() {
   const idx = getIdx();
-  const currentUke = Math.floor(idx / 3);
-  const container = document.getElementById('uke-plan-container');
-  container.innerHTML = UKER.map((u, ui) => {
+  const ferdigOkter = idx;
+  const tbody = document.getElementById('uke-tbody');
+  tbody.innerHTML = UKER.map((u, ui) => {
     const startIdx = ui * 3;
-    const aFerdig = idx > startIdx;
-    const bFerdig = idx > startIdx + 1;
-    const cFerdig = idx > startIdx + 2;
+    const aFerdig = ferdigOkter > startIdx;
+    const bFerdig = ferdigOkter > startIdx + 1;
+    const cFerdig = ferdigOkter > startIdx + 2;
     const heleFerdig = cFerdig;
-    const erNaa = ui === currentUke && !heleFerdig;
-    const cardClass = heleFerdig ? 'done-card' : erNaa ? 'current-card' : '';
     return `
-      <div class="uke-card ${cardClass}">
-        <div class="uke-card-head">
-          <div class="uke-card-head-left">
-            <span class="uke-card-num">Uke ${u.uke}</span>
-            ${u.hvile ? '<span class="hvile-badge">Hvile</span>' : ''}
-            ${heleFerdig ? '<span style="color:var(--green);font-size:13px;">✓</span>' : ''}
-            ${erNaa ? '<span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--a);font-weight:600;">Nå</span>' : ''}
-          </div>
-          <span class="uke-card-km">~${u.km} km</span>
-        </div>
-        <div class="uke-card-row a">
-          <span class="uke-row-type">A</span>
-          <span>${u.a}</span>
-          ${aFerdig ? '<span class="uke-row-done">✓</span>' : ''}
-        </div>
-        <div class="uke-card-row b">
-          <span class="uke-row-type">B</span>
-          <span>${u.b}</span>
-          ${bFerdig ? '<span class="uke-row-done">✓</span>' : ''}
-        </div>
-        <div class="uke-card-row c">
-          <span class="uke-row-type">C</span>
-          <span>${u.c}</span>
-          ${cFerdig ? '<span class="uke-row-done">✓</span>' : ''}
-        </div>
-      </div>`;
+      <tr class="${u.hvile ? 'hvile-row' : ''} ${heleFerdig ? 'done-row' : ''}">
+        <td>
+          <span class="uke-num">${u.uke}</span>
+          <span class="uke-km">~${u.km} km</span>
+          ${u.hvile ? '<span class="hvile-badge">Hvile</span>' : ''}
+          ${heleFerdig ? '<span class="done-check"> ✓</span>' : ''}
+        </td>
+        <td class="td-a">${aFerdig ? '✓ ' : ''}${u.a}</td>
+        <td class="td-b">${bFerdig ? '✓ ' : ''}${u.b}</td>
+        <td class="td-c">${cFerdig ? '✓ ' : ''}${u.c}</td>
+        <td style="color:var(--ink3);font-size:12px">${u.km} km</td>
+      </tr>
+    `;
   }).join('');
-}
-
-function angreSiste() {
-  const idx = getIdx();
-  if (idx === 0) return;
-
-  const logs = getLogs().map(normalizeLog);
-  const lastPlanIdx = logs.findIndex(l => l.source === 'plan');
-  if (lastPlanIdx !== -1) logs.splice(lastPlanIdx, 1);
-  saveLogs(logs);
-
-  setIdx(idx - 1);
-  renderNeste();
-  renderUkePlan();
-  renderProfil();
-  renderHistorikk();
-}
-
-function resetProgram() {
-  if (!confirm('Er du sikker? All historikk og fremdrift blir slettet, og programmet starter fra begynnelsen.')) return;
-  localStorage.removeItem('lp_idx');
-  localStorage.removeItem('lp2_logs');
-  renderNeste();
-  renderUkePlan();
-  renderProfil();
-  renderHistorikk();
-}
-
-function toggleLogForm() {
-  const wrap = document.getElementById('log-form-wrap');
-  const btn = document.getElementById('log-toggle-btn');
-  const isOpen = wrap.style.display !== 'none';
-  wrap.style.display = isOpen ? 'none' : 'block';
-  btn.textContent = isOpen ? '+ Logg ny økt' : '− Lukk skjema';
-  btn.classList.toggle('open', !isOpen);
 }
 
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (btn) btn.classList.add('active');
-
-  if (id === 'profil') renderProfil();
-  if (id === 'historikk') renderHistorikk();
+  btn.classList.add('active');
+  if (id === 'fremgang') renderFremgang();
+  if (id === 'logg') renderLoggList();
 }
 
 function saveLog() {
   const dato = document.getElementById('l-dato').value;
   if (!dato) { alert('Legg inn dato'); return; }
-
   const km = parseFloat(document.getElementById('l-km').value);
   const log = {
-    id: Date.now(),
-    dato,
-    okt: document.getElementById('l-okt').value,
+    dato, okt: document.getElementById('l-okt').value,
     km: isNaN(km) ? null : km,
     tempo: document.getElementById('l-tempo').value,
     puls: document.getElementById('l-puls').value,
     foel: document.getElementById('l-foel').value,
     notat: document.getElementById('l-notat').value,
-    source: 'manual',
-    kind: 'manual',
-    title: 'Manuell økt'
+    id: Date.now()
   };
-
-  const history = getHistory();
-  history.unshift(log);
-  saveLogs(history);
-
-  ['l-km', 'l-tempo', 'l-puls', 'l-notat'].forEach(id => document.getElementById(id).value = '');
-
-  const wrap = document.getElementById('log-form-wrap');
-  const toggleBtn = document.getElementById('log-toggle-btn');
-  wrap.style.display = 'none';
-  toggleBtn.textContent = '+ Logg ny økt';
-  toggleBtn.classList.remove('open');
-
-  renderHistorikk();
-  renderProfil();
+  const logs = getLogs();
+  logs.unshift(log);
+  saveLogs(logs);
+  ['l-km','l-tempo','l-puls','l-notat'].forEach(id => document.getElementById(id).value = '');
+  renderLoggList();
 }
 
-function renderProfil() {
-  const idx = getIdx();
-  const history = getHistory();
-  const totalKm = history.reduce((sum, log) => sum + (log.km || 0), 0);
-  const manualCount = history.filter(log => log.source === 'manual').length;
-  const planCount = history.filter(log => log.source === 'plan').length;
-  const avgKm = history.filter(log => log.km).length ? (totalKm / history.filter(log => log.km).length).toFixed(1) : '–';
-  const current = idx < SEKVENS.length ? SEKVENS[idx] : null;
-  const progress = SEKVENS.length ? Math.round((idx / SEKVENS.length) * 100) : 100;
-
-  document.getElementById('profile-grid').innerHTML = `
-    <div class="profile-card">
-      <div class="profile-icon">🏁</div>
-      <div class="profile-stat-number">${progress}%</div>
-      <div class="profile-stat-label">Planfullført</div>
-      <div class="profile-stat-copy">${idx} av ${SEKVENS.length} økter i planen er gjennomført.</div>
+function renderLoggList() {
+  const logs = getLogs();
+  const el = document.getElementById('logg-list');
+  if (!logs.length) { el.innerHTML = '<div class="empty-state">Ingen loggede økter ennå</div>'; return; }
+  el.innerHTML = logs.slice(0,15).map(l => `
+    <div class="logg-entry">
+      <div class="logg-dato">${l.dato.slice(5)}</div>
+      <div><span class="logg-badge ${l.okt}">Løp ${l.okt}</span></div>
+      <div class="logg-detaljer">
+        <div>${l.km ? l.km.toFixed(1)+' km' : '–'}${l.tempo ? ' · '+l.tempo+'/km' : ''}${l.puls ? ' · '+l.puls+' bpm' : ''}</div>
+        ${l.notat ? `<div class="logg-sub">${l.notat}</div>` : ''}
+      </div>
+      <div class="foel-icon">${foelIkon[l.foel]||''}</div>
     </div>
-    <div class="profile-card">
-      <div class="profile-icon">📏</div>
-      <div class="profile-stat-number">${totalKm.toFixed(1)}</div>
-      <div class="profile-stat-label">Logget km</div>
-      <div class="profile-stat-copy">Totalt antall km fra historikken, inkludert manuelle og planlagte økter.</div>
-    </div>
-    <div class="profile-card">
-      <div class="profile-icon">📊</div>
-      <div class="profile-stat-number">${avgKm}</div>
-      <div class="profile-stat-label">Snitt km</div>
-      <div class="profile-stat-copy">Gjennomsnittlig distanse per økt med registrert km.</div>
-    </div>
-    <div class="profile-card">
-      <div class="profile-icon">💓</div>
-      <div class="profile-stat-number">193</div>
-      <div class="profile-stat-label">Maks puls</div>
-      <div class="profile-stat-copy">Din plan er bygget rundt 193 som toppkapasitet.</div>
-    </div>
-    <div class="profile-card">
-      <div class="profile-icon">🌙</div>
-      <div class="profile-stat-number">66</div>
-      <div class="profile-stat-label">Hvilepuls</div>
-      <div class="profile-stat-copy">Brukes som utgangspunkt i pulssoner og treningsmål.</div>
-    </div>
-    <div class="profile-card">
-      <div class="profile-icon">📅</div>
-      <div class="profile-stat-number">${history.length}</div>
-      <div class="profile-stat-label">Økter i historikk</div>
-      <div class="profile-stat-copy">${planCount} fullførte planøkter og ${manualCount} manuelle økter.</div>
-    </div>
-  `;
-
-  const nextCopy = current
-    ? `Neste økt er <strong>${current.navn}</strong> i uke ${currentWeek()}. Du har ${SEKVENS.length - idx} økter igjen.`
-    : 'Alle øktene i planen er fullført.';
-
-  document.getElementById('profile-callout').innerHTML = `
-    <div>
-      <h3>Din neste økt</h3>
-      <p>${nextCopy}</p>
-    </div>
-    <div>
-      <h3>Om planen</h3>
-      <p>Planen følger 12 uker med tre løp per uke, samt hvileuker. Fullfør en økt for å flytte den til historikken og følge progresjonen i realtid.</p>
-    </div>
-  `;
+  `).join('');
 }
 
-function renderHistorikk() {
-  const history = getHistory();
-  const totalKm = history.reduce((sum, log) => sum + (log.km || 0), 0);
-  const planCount = history.filter(log => log.source === 'plan').length;
-  const manualCount = history.filter(log => log.source === 'manual').length;
-
-  document.getElementById('history-summary').innerHTML = `
-    <span class="summary-pill">${history.length} økter i historikken</span>
-    <span class="summary-pill">${planCount} fullførte planøkter</span>
-    <span class="summary-pill">${manualCount} manuelle økter</span>
-    <span class="summary-pill">${totalKm.toFixed(1)} km totalt</span>
-  `;
-
-  const list = document.getElementById('history-list');
-
-  if (!history.length) {
-    list.innerHTML = '<div class="empty-state">Ingen økter registrert ennå. Fullfør en økt eller legg inn en manuell oppføring.</div>';
-    return;
-  }
-
-  list.innerHTML = history.map(log => {
-    const typeClass = log.okt ? `type-${log.okt}` : 'type-D';
-
-    const stats = [];
-    if (log.km) stats.push({ label: 'Distanse', val: `${log.km.toFixed(1)} km` });
-    if (log.tempo) stats.push({ label: 'Tempo', val: `${log.tempo}/km` });
-    if (log.puls) stats.push({ label: 'Snittspuls', val: `${log.puls} bpm` });
-
-    const details = log.details && log.details.length
-      ? `<div class="history-copy">${log.details.join(' · ')}</div>`
-      : '';
-    const notat = log.notat
-      ? `<div class="history-copy" style="margin-top:6px;font-style:italic;">${log.notat}</div>`
-      : '';
-
-    const foot = stats.length ? `
-      <div class="history-entry-foot">
-        ${stats.map(s => `
-          <div class="history-stat">
-            <span class="history-stat-label">${s.label}</span>
-            <span class="history-stat-val">${s.val}</span>
-          </div>`).join('')}
-      </div>` : '';
-
-    return `
-      <div class="history-entry ${typeClass}">
-        <div class="history-entry-head">
-          <span class="history-badge ${log.source}">${log.source === 'plan' ? 'Plan' : 'Manuell'}</span>
-          ${log.okt ? `<span class="history-type-chip">Løp ${log.okt}</span>` : ''}
-          <span class="history-dato">${log.dato}</span>
-        </div>
-        <div class="history-entry-body">
-          <div class="history-title">${log.title || (log.okt ? `Løp ${log.okt}` : 'Økt')}</div>
-          ${details}
-          ${notat}
-        </div>
-        ${foot}
-      </div>`;
-  }).join('');
+function renderFremgang() {
+  const logs = getLogs();
+  const totalKm = logs.reduce((s,l) => s+(l.km||0), 0);
+  document.getElementById('s-km').textContent = totalKm.toFixed(1);
+  document.getElementById('s-okter').textContent = logs.length;
+  document.getElementById('s-snitt').textContent = logs.length ? (totalKm/logs.length).toFixed(1) : '–';
+  const ford = {A:0,B:0,C:0,D:0};
+  logs.forEach(l => { if (ford[l.okt]!==undefined) ford[l.okt]++; });
+  const maxF = Math.max(...Object.values(ford), 1);
+  const names = {A:'Løp A',B:'Løp B',C:'Løp C',D:'Løp D'};
+  const barEl = document.getElementById('bar-chart');
+  barEl.innerHTML = logs.length ? Object.keys(ford).map(k => `
+    <div class="bar-row">
+      <div class="bar-label">${names[k]}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(ford[k]/maxF*100)}%;background:${colors[k]}"></div></div>
+      <div class="bar-val">${ford[k]} økt${ford[k]!==1?'er':''}</div>
+    </div>`).join('') : '<div class="empty-state">Ingen data ennå</div>';
+  const byDate = logs.filter(l=>l.km).slice(0,8).reverse();
+  const histEl = document.getElementById('hist-chart');
+  if (!byDate.length) { histEl.innerHTML = '<div class="empty-state">Ingen km-data ennå</div>'; return; }
+  const maxKm = Math.max(...byDate.map(l=>l.km||0), 1);
+  histEl.innerHTML = byDate.map(l => `
+    <div class="bar-row">
+      <div class="bar-label">${l.dato.slice(5)} ${l.okt}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((l.km||0)/maxKm*100)}%;background:${colors[l.okt]}"></div></div>
+      <div class="bar-val">${(l.km||0).toFixed(1)} km</div>
+    </div>`).join('');
 }
 
-function init() {
-  document.getElementById('l-dato').value = new Date().toISOString().slice(0, 10);
-  renderNeste();
-  renderUkePlan();
-  renderProfil();
-  renderHistorikk();
-}
-
-init();
+document.getElementById('l-dato').value = new Date().toISOString().slice(0,10);
+initTheme();
+renderNeste();
+renderUkePlan();
+renderLoggList();
 </script>
 </body>
 </html>
