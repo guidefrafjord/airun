@@ -215,7 +215,24 @@
     background: var(--bg); border: 1px solid var(--border);
     border-radius: 3px; color: var(--ink2);
   }
-  .logg-dato { font-size:11px; color:var(--ink3); }
+  .logg-entry-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
+  .kopier-btn {
+    background: none; border: 1px solid var(--border); border-radius: 3px;
+    padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .kopier-btn:hover { color: var(--ink); border-color: var(--ink); }
+  .kopier-btn.kopiert { color: var(--a); border-color: var(--a); }
+  .logg-entry-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
+  .kopier-btn {
+    background: none; border: 1px solid var(--border); border-radius: 3px;
+    padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3);
+    cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px;
+  }
+  .kopier-btn:hover { color: var(--ink); border-color: var(--ink); }
+  .kopier-btn.kopiert { color: var(--a); border-color: var(--a); }
   .logg-badge { display:inline-block; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:2px; font-weight:500; }
   .logg-badge.A { background:var(--a-light); color:var(--a); }
   .logg-badge.B { background:var(--b-light); color:var(--b); }
@@ -636,6 +653,37 @@ function showPage(id, btn) {
   if (id === 'historikk') renderLoggList();
 }
 
+function lagStravaText(l, okt) {
+  if (!okt) return l.notat || '';
+  const type = okt.type;
+  if (type === 'A') {
+    const km = okt.detaljer[0];
+    const tempo = okt.detaljer[1].replace(' /km', 'min/km');
+    return `Distanse\n${km}\n${tempo}`;
+  }
+  if (type === 'C') {
+    const km = okt.detaljer[0];
+    const tempo = okt.detaljer[1].replace(' /km', 'min/km');
+    return `Moderat\n${km}\n${tempo}`;
+  }
+  if (type === 'B') {
+    const drag = okt.detaljer[0];
+    const fart = okt.detaljer[1];
+    const pause = okt.detaljer[2];
+    // Eks: "6 × 400m" → "x6", fart mølla/ute → "11/6,5kmt", pause "75 sek @ ..." → "1:15"
+    const antall = drag.match(/(\d+)\s*×/)?.[1] || '';
+    const molla = fart.match(/Mølla:\s*([\d,]+)\s*km\/t/)?.[1] || '';
+    const pauseSek = pause.match(/(\d+)\s*sek/)?.[1] || '';
+    const pauseMin = pauseSek ? `${Math.floor(parseInt(pauseSek)/60)}:${String(parseInt(pauseSek)%60).padStart(2,'0')}` : '';
+    const dragTid = drag.match(/(\d+)m/)?.[1] === '400' ? '2:24' :
+                    drag.match(/(\d+)m/)?.[1] === '600' ? '3:20' :
+                    drag.match(/(\d+)m/)?.[1] === '800' ? '4:35' :
+                    drag.match(/(\d+)m/)?.[1] === '1000' ? '6:00' : '';
+    return `Intervaller\n${dragTid}/${pauseMin}\n${molla}/6,5kmt\nx${antall}`;
+  }
+  return l.notat || '';
+}
+
 function renderLoggList() {
   const logs = getLogs();
   const el = document.getElementById('logg-list');
@@ -652,14 +700,39 @@ function renderLoggList() {
             <div class="logg-sub">${l.notat || ''}</div>
           </div>
         </div>
-        ${detaljer ? `<div class="logg-entry-body"><div class="logg-entry-detaljer">${detaljer}</div></div>` : ''}
+        ${detaljer ? `
+        <div class="logg-entry-body">
+          <div class="logg-entry-detaljer">${detaljer}</div>
+          <div class="logg-entry-footer">
+            <button class="kopier-btn" onclick="kopierStrava(event, this, ${i})">⎘ Kopier til Strava</button>
+          </div>
+        </div>` : ''}
       </div>
     `;
   }).join('');
 }
 
 function toggleLogg(el) {
-  el.classList.toggle('open');
+  const body = el.querySelector('.logg-entry-body');
+  if (!body) return;
+  const isOpen = body.style.display === 'block';
+  body.style.display = isOpen ? 'none' : 'block';
+}
+
+function kopierStrava(event, btn, idx) {
+  event.stopPropagation();
+  const logs = getLogs();
+  const l = logs[idx];
+  const okt = l.oktIdx !== undefined ? SEKVENS[l.oktIdx] : null;
+  const tekst = lagStravaText(l, okt);
+  navigator.clipboard.writeText(tekst).then(() => {
+    btn.textContent = '✓ Kopiert';
+    btn.classList.add('kopiert');
+    setTimeout(() => {
+      btn.textContent = '⎘ Kopier til Strava';
+      btn.classList.remove('kopiert');
+    }, 2000);
+  });
 }
 
 function renderProfil() {
