@@ -31,8 +31,8 @@
   .header::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; border:1px solid var(--border); opacity:0.6; }
   .header::after { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; border:1px solid var(--border); opacity:0.4; }
   .header-label { font-size:10px; letter-spacing:0.15em; color:var(--ink3); text-transform:uppercase; margin-bottom:8px; }
-  .header-title { font-family:'Fraunces',serif; font-size:38px; font-weight:300; line-height:1.1; }
-  .header-title em { font-style:italic; color:#1A8A3A; font-weight:600; }
+  .version { position:absolute; top:16px; right:20px; font-size:10px; letter-spacing:0.1em; color:var(--ink3); text-transform:uppercase; }
+  .header-title em { font-style:normal; color:#FC4C02; font-weight:700; }
 
   /* NESTE ØKT BOKS */
   .neste-wrap { padding: 24px 40px; border-bottom: 1px solid var(--border); }
@@ -296,6 +296,7 @@
 <body>
 
 <div class="header">
+  <span class="version">v1.8</span>
   <h1 class="header-title">ai<em>run</em></h1>
 </div>
 
@@ -657,12 +658,12 @@ function lagStravaText(l, okt) {
   if (!okt) return l.notat || '';
   const type = okt.type;
   if (type === 'A') {
-    const km = okt.detaljer[0];
+    const km = okt.detaljer[0].replace(' km', 'km');
     const tempo = okt.detaljer[1].replace(' /km', 'min/km');
     return `Distanse\n${km}\n${tempo}`;
   }
   if (type === 'C') {
-    const km = okt.detaljer[0];
+    const km = okt.detaljer[0].replace(' km', 'km');
     const tempo = okt.detaljer[1].replace(' /km', 'min/km');
     return `Moderat\n${km}\n${tempo}`;
   }
