@@ -195,7 +195,26 @@
 
   /* HISTORIKK */
   .logg-list { display:flex; flex-direction:column; gap:8px; }
-  .logg-entry { display:grid; grid-template-columns:64px 80px 1fr auto; align-items:center; gap:16px; padding:14px 16px; background:var(--bg2); border:1px solid var(--border); border-radius:3px; }
+  .logg-entry {
+    background:var(--bg2); border:1px solid var(--border); border-radius:3px;
+    cursor: pointer; overflow: hidden; transition: border-color 0.2s;
+  }
+  .logg-entry:hover { border-color: var(--ink3); }
+  .logg-entry-header {
+    display:grid; grid-template-columns:64px 90px 1fr;
+    align-items:center; gap:16px; padding:14px 16px;
+  }
+  .logg-entry-body {
+    display: none; padding: 0 16px 14px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .logg-entry.open .logg-entry-body { display: block; }
+  .logg-entry-detaljer { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .logg-entry-tag {
+    font-size: 11px; padding: 4px 10px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 3px; color: var(--ink2);
+  }
   .logg-dato { font-size:11px; color:var(--ink3); }
   .logg-badge { display:inline-block; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:2px; font-weight:500; }
   .logg-badge.A { background:var(--a-light); color:var(--a); }
@@ -478,6 +497,7 @@ function fullforOkt() {
   logs.unshift({
     dato: new Date().toISOString().slice(0,10),
     okt: okt.type,
+    oktIdx: idx,
     notat: `Løp ${okt.type}${nr} – ${okt.navn}`,
     id: Date.now()
   });
@@ -486,6 +506,7 @@ function fullforOkt() {
   renderNeste();
   renderKommende();
   renderUkePlan();
+  renderLoggList();
 }
 
 function angreOkt() {
@@ -619,15 +640,26 @@ function renderLoggList() {
   const logs = getLogs();
   const el = document.getElementById('logg-list');
   if (!logs.length) { el.innerHTML = '<div class="empty-state">Ingen fullførte økter ennå</div>'; return; }
-  el.innerHTML = logs.map(l => `
-    <div class="logg-entry">
-      <div class="logg-dato">${l.dato.slice(5)}</div>
-      <div><span class="logg-badge ${l.okt}">Løp ${l.okt}</span></div>
-      <div class="logg-detaljer">
-        <div class="logg-sub">${l.notat || ''}</div>
+  el.innerHTML = logs.map((l, i) => {
+    const okt = l.oktIdx !== undefined ? SEKVENS[l.oktIdx] : null;
+    const detaljer = okt ? okt.detaljer.map(d => `<span class="logg-entry-tag">${d}</span>`).join('') : '';
+    return `
+      <div class="logg-entry" onclick="toggleLogg(this)">
+        <div class="logg-entry-header">
+          <div class="logg-dato">${l.dato.slice(5)}</div>
+          <div><span class="logg-badge ${l.okt}">Løp ${l.okt}</span></div>
+          <div class="logg-detaljer">
+            <div class="logg-sub">${l.notat || ''}</div>
+          </div>
+        </div>
+        ${detaljer ? `<div class="logg-entry-body"><div class="logg-entry-detaljer">${detaljer}</div></div>` : ''}
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
+}
+
+function toggleLogg(el) {
+  el.classList.toggle('open');
 }
 
 function renderProfil() {
