@@ -296,7 +296,7 @@
 <body>
 
 <div class="header">
-  <span class="version">v2.1</span>
+  <span class="version">v2.3</span>
   <h1 class="header-title">ai<em>run</em></h1>
 </div>
 
@@ -401,68 +401,68 @@
 <script>
 const SEKVENS = [
   // Økt 1
-  {type:'A', navn:'Distanse', detaljer:['3,5 km', '6:35–7:05 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['3,5 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['6 × 400m', 'Mølla: 10,0 km/t · 2:24 per drag', 'Ute: 400m @ 6:00 /km', 'Pause: 75 sek @ 6,5–7,0 km/t', 'Toppe S3']},
   {type:'C', navn:'Moderat', detaljer:['1,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
   // Økt 2
-  {type:'A', navn:'Distanse', detaljer:['4,0 km', '6:35–7:05 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['4,0 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['6 × 400m', 'Mølla: 11,0 km/t · 2:11 per drag', 'Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t', 'Toppe S3']},
   {type:'C', navn:'Moderat', detaljer:['2,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
   // Økt 3
-  {type:'A', navn:'Distanse', detaljer:['4,5 km', '6:35–7:05 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['4,5 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['7 × 400m', 'Mølla: 11,0 km/t · 2:11 per drag', 'Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t', 'Toppe S3']},
   {type:'C', navn:'Moderat', detaljer:['3,0 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
   // Økt 4
-  {type:'A', navn:'Distanse', detaljer:['5,0 km', '6:35–7:05 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['5,0 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['8 × 400m', 'Mølla: 11,0 km/t · 2:11 per drag', 'Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t', 'Toppe S3']},
   {type:'C', navn:'Moderat', detaljer:['3,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
   // Økt 5
-  {type:'A', navn:'Distanse', detaljer:['5,5 km', '6:35–7:05 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['5,5 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['5 × 600m', 'Mølla: 10,8 km/t · 3:20 per drag', 'Ute: 600m @ 5:33 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
-  {type:'C', navn:'Moderat', detaljer:['4,0 km', '5:10–5:40 /km', 'S2 · 157–165 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['4,0 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
   // Økt 6
-  {type:'A', navn:'Distanse', detaljer:['6,0 km', '6:35–7:05 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['6,0 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['5 × 600m', 'Mølla: 11,0 km/t · 3:16 per drag', 'Ute: 600m @ 5:27 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
-  {type:'C', navn:'Moderat', detaljer:['4,5 km', '5:05–5:35 /km', 'S2 · 157–165 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['4,5 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
   // Økt 7
-  {type:'A', navn:'Distanse', detaljer:['6,5 km', '6:25–6:55 /km', 'S1 · 142–150 bpm']},
-  {type:'B', navn:'Intervaller', detaljer:['4 × 800m', 'Mølla: 10,3 km/t · 4:39 per drag', 'Ute: 800m @ 5:50 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
-  {type:'C', navn:'Moderat', detaljer:['5,0 km', '5:00–5:30 /km', 'S2 · 157–165 bpm']},
-  // Økt 8 – hvile
-  {type:'A', navn:'Distanse – rolig', detaljer:['4,0 km', '6:35–7:05 /km', 'S1 · rolig']},
-  {type:'B', navn:'Intervaller – lett', detaljer:['5 × 400m', 'Mølla: 11,0 km/t · 2:11 per drag', 'Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t', 'Ikke press']},
-  {type:'C', navn:'Moderat – rolig', detaljer:['2,5 km', '5:20–5:50 /km', 'Under 157 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['6,5 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
+  {type:'B', navn:'Intervaller', detaljer:['4 × 800m', 'Mølla: 9,8 km/t · 4:54 per drag', 'Ute: 800m @ 6:07 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
+  {type:'C', navn:'Moderat', detaljer:['5,0 km', '5:20–5:50 /km', 'S2 · 157–165 bpm']},
+  // Økt 8
+  {type:'A', navn:'Distanse', detaljer:['7,0 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
+  {type:'B', navn:'Intervaller', detaljer:['5 × 800m', 'Mølla: 10,3 km/t · 4:39 per drag', 'Ute: 800m @ 5:50 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
+  {type:'C', navn:'Moderat', detaljer:['5,5 km', '5:30–6:00 /km', 'S2 · 157–165 bpm']},
   // Økt 9
-  {type:'A', navn:'Distanse', detaljer:['7,0 km', '6:20–6:50 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['7,5 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['4 × 800m', 'Mølla: 10,5 km/t · 4:34 per drag', 'Ute: 800m @ 5:43 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
-  {type:'C', navn:'Moderat', detaljer:['5,5 km', '4:55–5:25 /km', 'S2 · 157–165 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['6,0 km', '5:30–6:00 /km', 'S2 · 157–165 bpm']},
   // Økt 10
-  {type:'A', navn:'Distanse', detaljer:['7,5 km', '6:15–6:45 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['8,0 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['5 × 800m', 'Mølla: 10,5 km/t · 4:34 per drag', 'Ute: 800m @ 5:43 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Toppe S3']},
-  {type:'C', navn:'Moderat', detaljer:['6,0 km', '4:50–5:20 /km', 'S2 · 157–165 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['6,5 km', '5:25–5:55 /km', 'S2 · 157–165 bpm']},
   // Økt 11
-  {type:'A', navn:'Distanse', detaljer:['8,0 km', '6:10–6:40 /km', 'S1 · 142–150 bpm']},
+  {type:'A', navn:'Distanse', detaljer:['8,5 km', 'S1 · mål 142–150 bpm', 'Puls er fasiten – ikke tempo']},
   {type:'B', navn:'Intervaller', detaljer:['4 × 1000m', 'Mølla: 10,0 km/t · 6:00 per drag', 'Ute: 1000m @ 6:00 /km', 'Pause: 120 sek @ 6,5–7,0 km/t', 'Toppe S3']},
-  {type:'C', navn:'Moderat', detaljer:['6,5 km', '4:45–5:15 /km', 'S2 · 157–165 bpm']},
+  {type:'C', navn:'Moderat', detaljer:['7,0 km', '5:25–5:55 /km', 'S2 · 157–165 bpm']},
   // Økt 12 – nedtrapping
-  {type:'A', navn:'Distanse – nedtrapping ✈️', detaljer:['3,5 km', '6:35–7:05 /km', 'S1 · lett']},
-  {type:'B', navn:'Intervaller – nedtrapping', detaljer:['4 × 400m', 'Mølla: 11,0 km/t · 2:11 per drag', 'Ute: 400m @ 5:27 /km', 'Pause: 75 sek @ 6,5–7,0 km/t', 'Ikke press']},
-  {type:'C', navn:'Moderat – nedtrapping', detaljer:['2,5 km', '5:20–5:50 /km', 'Rolig']},
+  {type:'A', navn:'Distanse – nedtrapping ✈️', detaljer:['4,0 km', 'S1 · mål 142–150 bpm', 'Rolig og lett']},
+  {type:'B', navn:'Intervaller – nedtrapping', detaljer:['3 × 800m', 'Mølla: 10,3 km/t · 4:39 per drag', 'Ute: 800m @ 5:50 /km', 'Pause: 90 sek @ 6,5–7,0 km/t', 'Lett gjennomkjøring']},
+  {type:'C', navn:'Moderat – nedtrapping', detaljer:['3,0 km', '5:30–6:00 /km', 'Rolig ✈️']},
 ];
 
 const UKER = [
-  {uke:1,  a:'3,5 km @ 6:35–7:05',    b:'6×400m @ 10,0 km/t',   c:'1,5 km @ 5:20–5:50',  km:9},
-  {uke:2,  a:'4,0 km @ 6:35–7:05',    b:'6×400m @ 11,0 km/t',   c:'2,5 km @ 5:20–5:50',  km:10},
-  {uke:3,  a:'4,5 km @ 6:35–7:05',    b:'7×400m @ 11,0 km/t',   c:'3,0 km @ 5:20–5:50',  km:12},
-  {uke:4,  a:'5,0 km @ 6:35–7:05',    b:'8×400m @ 11,0 km/t',   c:'3,5 km @ 5:20–5:50',  km:13},
-  {uke:5,  a:'5,5 km @ 6:35–7:05',    b:'5×600m @ 10,8 km/t',   c:'4,0 km @ 5:10–5:40',  km:14},
-  {uke:6,  a:'6,0 km @ 6:35–7:05',    b:'5×600m @ 11,0 km/t',   c:'4,5 km @ 5:05–5:35',  km:16},
-  {uke:7,  a:'6,5 km @ 6:25–6:55',    b:'4×800m @ 10,3 km/t',   c:'5,0 km @ 5:00–5:30',  km:17},
-  {uke:8,  a:'Hvileuke – 4,0 km rolig',b:'5×400m lett',           c:'2,5 km rolig',         km:11, hvile:true},
-  {uke:9,  a:'7,0 km @ 6:20–6:50',    b:'4×800m @ 10,5 km/t',   c:'5,5 km @ 4:55–5:25',  km:18},
-  {uke:10, a:'7,5 km @ 6:15–6:45',    b:'5×800m @ 10,5 km/t',   c:'6,0 km @ 4:50–5:20',  km:20},
-  {uke:11, a:'8,0 km @ 6:10–6:40',    b:'4×1000m @ 10,0 km/t',  c:'6,5 km @ 4:45–5:15',  km:21},
-  {uke:12, a:'Nedtrapping – 3,5 km',  b:'4×400m lett',            c:'2,5 km rolig ✈️',      km:8},
+  {uke:1,  a:'3,5 km · S1 142–150 bpm',  b:'6×400m @ 10,0 km/t',  c:'1,5 km @ 5:20–5:50',  km:9},
+  {uke:2,  a:'4,0 km · S1 142–150 bpm',  b:'6×400m @ 11,0 km/t',  c:'2,5 km @ 5:20–5:50',  km:10},
+  {uke:3,  a:'4,5 km · S1 142–150 bpm',  b:'7×400m @ 11,0 km/t',  c:'3,0 km @ 5:20–5:50',  km:12},
+  {uke:4,  a:'5,0 km · S1 142–150 bpm',  b:'8×400m @ 11,0 km/t',  c:'3,5 km @ 5:20–5:50',  km:13},
+  {uke:5,  a:'5,5 km · S1 142–150 bpm',  b:'5×600m @ 10,8 km/t',  c:'4,0 km @ 5:20–5:50',  km:14},
+  {uke:6,  a:'6,0 km · S1 142–150 bpm',  b:'5×600m @ 11,0 km/t',  c:'4,5 km @ 5:20–5:50',  km:16},
+  {uke:7,  a:'6,5 km · S1 142–150 bpm',  b:'4×800m @ 10,3 km/t',  c:'5,0 km @ 5:20–5:50',  km:17},
+  {uke:8,  a:'7,0 km · S1 142–150 bpm',  b:'5×800m @ 10,3 km/t',  c:'5,5 km @ 5:30–6:00',  km:19},
+  {uke:9,  a:'7,5 km · S1 142–150 bpm',  b:'4×800m @ 10,5 km/t',  c:'6,0 km @ 5:30–6:00',  km:20},
+  {uke:10, a:'8,0 km · S1 142–150 bpm',  b:'5×800m @ 10,5 km/t',  c:'6,5 km @ 5:25–5:55',  km:22},
+  {uke:11, a:'8,5 km · S1 142–150 bpm',  b:'4×1000m @ 10,0 km/t', c:'7,0 km @ 5:25–5:55',  km:24},
+  {uke:12, a:'Nedtrapping – 4,0 km',      b:'3×800m lett ✈️',       c:'3,0 km rolig ✈️',      km:10},
 ];
 
 const colors = {A:'#2D6A3F', B:'#1A4A7A', C:'#8B4A00', D:'#5A5A52'};
@@ -659,8 +659,7 @@ function lagStravaText(l, okt) {
   const type = okt.type;
   if (type === 'A') {
     const km = okt.detaljer[0].replace(' km', 'km');
-    const tempo = okt.detaljer[1].replace(' /km', 'min/km');
-    return `Distanse\n${km}\n${tempo}`;
+    return `Distanse\n${km}\n142–150 bpm (S1)`;
   }
   if (type === 'C') {
     const km = okt.detaljer[0].replace(' km', 'km');
