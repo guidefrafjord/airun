@@ -296,7 +296,7 @@
 <body>
 
 <div class="header">
-  <span class="version">v2.6</span>
+  <span class="version">v2.7</span>
   <h1 class="header-title">ai<em>run</em></h1>
 </div>
 
@@ -663,8 +663,7 @@ function lagStravaText(l, okt) {
   }
   if (type === 'C') {
     const km = okt.detaljer[0].replace(' km', 'km');
-    const tempo = okt.detaljer[1].replace(' /km', 'min/km');
-    return `Moderat\n${km}\n${tempo}`;
+    return `Moderat\n${km}\n157–165 s/min`;
   }
   if (type === 'B') {
     const drag = okt.detaljer[0];
